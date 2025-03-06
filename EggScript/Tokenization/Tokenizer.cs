@@ -15,7 +15,7 @@ internal static partial class Tokenizer
 		{ TokenType.Keyword, KeywordRegex() },
 		{ TokenType.Whitespace, WhitespaceRegex() },
 		{ TokenType.Punctuation, PunctuationRegex() },
-		//{ TokenType.Number, NumberRegex() },
+		{ TokenType.Number, NumberRegex() },
 		{ TokenType.String, StringRegex() },
 		{ TokenType.Comment, CommentRegex() },
 	};
@@ -68,8 +68,8 @@ internal static partial class Tokenizer
 	private static partial Regex WhitespaceRegex();
 	[GeneratedRegex(@"^[\(\);]")]
 	private static partial Regex PunctuationRegex();
-	//[GeneratedRegex(@"^[\d]+")]
-	//private static partial Regex NumberRegex();
+	[GeneratedRegex(@"^[\d]+")]
+	private static partial Regex NumberRegex();
 	[GeneratedRegex(@"^""[^""]*""")]
 	private static partial Regex StringRegex();
 	[GeneratedRegex(@"^\/\/.*|\/\*[\s\S]*?\*\/")]
