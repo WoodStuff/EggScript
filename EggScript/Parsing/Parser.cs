@@ -60,17 +60,20 @@ internal class Parser(List<Token> tokens)
 	{
 		if (!Match(TokenType.Keyword, "print")) throw new EggScriptException("Statement must start from a keyword");
 		if (!Match(TokenType.Punctuation, "(")) throw new EggScriptException("( expected");
-
-		if (!Match(TokenType.String, out string value)) throw new EggScriptException("String expected");
-		PrintNode node = new(value);
-
+		Token token = Next();
+		PrintNode node = token.Type switch
+		{
+			TokenType.String => new(token.Value),
+			TokenType.Number => new(token.Value),
+			_ => throw new EggScriptException("String expected"),
+		};
 		if (!Match(TokenType.Punctuation, ")")) throw new EggScriptException(") expected");
 
 		return node;
 	}
 
 	/// <summary>
-	/// Tries to detect what token is next based on the type.
+	/// Tries to detect what token is next based on the type and advances the queue if it's correct.
 	/// </summary>
 	/// <param name="type">What type the next token is predicted to be.</param>
 	/// <param name="value">If successful, the value of the token.</param>
@@ -86,7 +89,7 @@ internal class Parser(List<Token> tokens)
 	}
 
 	/// <summary>
-	/// Tries to detect what token is next based on the type and value.
+	/// Tries to detect what token is next based on the type and value and advances the queue if it's correct.
 	/// </summary>
 	/// <param name="type">What type the next token is predicted to be.</param>
 	/// <param name="value">What value the next token is predicted to have.</param>
@@ -97,5 +100,16 @@ internal class Parser(List<Token> tokens)
 
 		Index++;
 		return true;
+	}
+
+	/// <summary>
+	/// Gets the next token in the queue and advances the queue.
+	/// </summary>
+	/// <returns>The next token.</returns>
+	private Token Next()
+	{
+		Token token = CurrentToken;
+		Index++;
+		return token;
 	}
 }
