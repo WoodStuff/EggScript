@@ -71,7 +71,7 @@ internal static partial class Tokenizer
 	private static partial Regex PunctuationRegex();
 	[GeneratedRegex(@"^[+\-*/]")]
 	private static partial Regex OperatorRegex();
-	[GeneratedRegex(@"^[\d]+")]
+	[GeneratedRegex(@"^\d*\.?\d+")]
 	private static partial Regex NumberRegex();
 	[GeneratedRegex(@"^""[^""]*""")]
 	private static partial Regex StringRegex();

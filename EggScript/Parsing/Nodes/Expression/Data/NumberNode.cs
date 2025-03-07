@@ -8,12 +8,12 @@ public class NumberNode : IDataNode
 	/// <summary>
 	/// The value of the number node.
 	/// </summary>
-	public int Value { get; }
+	public double Value { get; }
 
 	object IDataNode.Value => Value;
 
-	public NumberNode(int value) => Value = value;
-	public NumberNode(string value) => Value = int.Parse(value);
+	public NumberNode(double value) => Value = value;
+	public NumberNode(string value) => Value = double.Parse(value);
 
 	public static NumberNode operator +(NumberNode left, NumberNode right) => new(left.Value + right.Value);
 	public static NumberNode operator -(NumberNode left, NumberNode right) => new(left.Value - right.Value);

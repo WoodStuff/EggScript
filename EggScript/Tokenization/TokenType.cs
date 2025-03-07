@@ -22,7 +22,7 @@ internal enum TokenType
 	/// </summary>
 	Operator,
 	/// <summary>
-	/// A non-negative integer number, like 7 or 823.
+	/// A number, like 7, -823 or 12.5.
 	/// </summary>
 	Number,
 	/// <summary>
