@@ -5,4 +5,8 @@
 /// </summary>
 public interface IDataNode : INode
 {
+	/// <summary>
+	/// The value of the <see cref="IDataNode"/>.
+	/// </summary>
+	object Value { get; }
 }

@@ -1,5 +1,6 @@
 ﻿using EggScript.Exceptions;
 using EggScript.Parsing.Nodes;
+using EggScript.Parsing.Nodes.Data;
 using EggScript.Parsing.Nodes.Statement;
 using EggScript.Tokenization;
 
@@ -50,8 +51,8 @@ internal class Parser(List<Token> tokens)
 		Token token = Next();
 		PrintNode node = token.Type switch
 		{
-			TokenType.String => new(new(token.Value)),
-			TokenType.Number => new(new(token.Value)),
+			TokenType.String => new(new StringNode(token.Value)),
+			TokenType.Number => new(new NumberNode(token.Value)),
 			_ => throw new EggScriptException("String expected"),
 		};
 		if (!Match(TokenType.Punctuation, ")")) throw new EggScriptException(") expected");

@@ -22,7 +22,7 @@ internal static class Interpreter
 			switch (node)
 			{
 				case PrintNode printNode:
-					Console.WriteLine(printNode.Text.Value);
+					Console.WriteLine(printNode.Data.Value);
 					break;
 
 				default:

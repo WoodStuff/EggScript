@@ -5,11 +5,11 @@ namespace EggScript.Parsing.Nodes.Statement;
 /// <summary>
 /// A node that logs something.
 /// </summary>
-/// <param name="text">The text to log.</param>
-public class PrintNode(StringNode text) : IStatementNode
+/// <param name="data">The value to log.</param>
+public class PrintNode(IDataNode data) : IStatementNode
 {
 	/// <summary>
 	/// The value to log.
 	/// </summary>
-	public StringNode Text { get; } = text;
+	public IDataNode Data { get; } = data;
 }

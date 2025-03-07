@@ -10,4 +10,6 @@ public class StringNode(string value) : IDataNode
 	/// The value of the string node.
 	/// </summary>
 	public string Value { get; } = value;
+
+	object IDataNode.Value => Value;
 }
