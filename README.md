@@ -11,7 +11,7 @@ A language I made because I felt like it. Built in C#.
 ## Example program
 ```
 print("hello"); // prints hello to the console
-print(3 * 5) // multiply numbers together
-print(0.1 + 0.2) // 0.30000000000000004, just like in any self-respecting language
+print(3 * 5); // multiply numbers together
+print(0.1 + 0.2); // 0.30000000000000004, just like in any self-respecting language
 // print(uncomment this line for an error)
 ```
