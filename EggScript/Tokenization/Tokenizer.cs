@@ -15,11 +15,11 @@ internal static partial class Tokenizer
 		{ TokenType.Keyword, KeywordRegex() },
 		{ TokenType.FreeKeyword, FreeKeywordRegex() },
 		{ TokenType.Whitespace, WhitespaceRegex() },
+		{ TokenType.Comment, CommentRegex() },
 		{ TokenType.Punctuation, PunctuationRegex() },
 		{ TokenType.Operator, OperatorRegex() },
 		{ TokenType.Number, NumberRegex() },
 		{ TokenType.String, StringRegex() },
-		{ TokenType.Comment, CommentRegex() },
 	};
 
 	/// <summary>

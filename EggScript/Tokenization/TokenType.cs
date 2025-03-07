@@ -18,6 +18,12 @@ internal enum TokenType
 	/// </summary>
 	Whitespace,
 	/// <summary>
+	/// A code comment, which ignores anything written after it. <para />
+	/// Block comment: Includes // and everything after it. <para />
+	/// Multiline comment: Includes /* */ and everything between those.
+	/// </summary>
+	Comment,
+	/// <summary>
 	/// Punctuation that has special meaning, like brackets.
 	/// </summary>
 	Punctuation,
@@ -33,12 +39,6 @@ internal enum TokenType
 	/// A string, enclosed by double quotes, like "hello".
 	/// </summary>
 	String,
-	/// <summary>
-	/// A code comment, which ignores anything written after it. <para />
-	/// Block comment: Includes // and everything after it. <para />
-	/// Multiline comment: Includes /* */ and everything between those.
-	/// </summary>
-	Comment,
 	/// <summary>
 	/// The end of the source code. Always has a value of empty string.
 	/// </summary>
