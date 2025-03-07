@@ -1,4 +1,5 @@
 ﻿using EggScript.Exceptions;
+using EggScript.Parsing.Nodes.Expression;
 using EggScript.Parsing.Nodes.Expression.Data;
 using EggScript.Parsing.Nodes.Statement;
 using EggScript.Tokenization;
@@ -48,7 +49,7 @@ internal class Parser(List<Token> tokens)
 		if (!Match(TokenType.Keyword, "print")) throw new EggScriptException("Statement must start from a keyword");
 		if (!Match(TokenType.Punctuation, "(")) throw new EggScriptException("( expected");
 
-		IDataNode data = ParseExpression();
+		IExpressionNode data = ParseExpression();
 		PrintNode node = new(data);
 
 		if (!Match(TokenType.Punctuation, ")")) throw new EggScriptException(") expected");
@@ -57,7 +58,18 @@ internal class Parser(List<Token> tokens)
 		return node;
 	}
 
-	private IDataNode ParseExpression()
+	private IExpressionNode ParseExpression()
+	{
+		IExpressionNode data = ParsePrimitive();
+		while (Match(TokenType.Operator, "+"))
+		{
+			IDataNode right = ParsePrimitive();
+			data = new OperatorNode(data, "+", right);
+		}
+		return data;
+	}
+
+	private IDataNode ParsePrimitive()
 	{
 		Token token = Next();
 		IDataNode node = token.Type switch

@@ -1,6 +1,8 @@
 ﻿using EggScript.Exceptions;
 using EggScript.Parsing;
 using EggScript.Parsing.Nodes;
+using EggScript.Parsing.Nodes.Expression;
+using EggScript.Parsing.Nodes.Expression.Data;
 using EggScript.Parsing.Nodes.Statement;
 
 namespace EggScript.Runtime;
@@ -22,12 +24,42 @@ internal static class Interpreter
 			switch (node)
 			{
 				case PrintNode printNode:
-					Console.WriteLine(printNode.Data.Value);
+					Console.WriteLine(GetValue(printNode.Data).Value);
 					break;
 
 				default:
 					throw new EggScriptException("Invalid node");
 			}
+		}
+	}
+
+	private static IDataNode GetValue(IExpressionNode node)
+	{
+		switch (node)
+		{
+			case IDataNode dataNode:
+				return dataNode;
+
+			case OperatorNode operatorNode:
+				return ParseOperator(operatorNode);
+
+			default:
+				throw new EggScriptException("Invalid node");
+		}
+	}
+
+	private static IDataNode ParseOperator(OperatorNode node)
+	{
+		IDataNode left = GetValue(node.Left);
+		IDataNode right = GetValue(node.Right);
+
+		switch ((left, right))
+		{
+			case (NumberNode l, NumberNode r):
+				return new NumberNode(l.Value + r.Value);
+
+			default:
+				throw new EggScriptException("Invalid data types in operator");
 		}
 	}
 }

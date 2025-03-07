@@ -18,6 +18,10 @@ internal enum TokenType
 	/// </summary>
 	Punctuation,
 	/// <summary>
+	/// An operator, such as + or *.
+	/// </summary>
+	Operator,
+	/// <summary>
 	/// A non-negative integer number, like 7 or 823.
 	/// </summary>
 	Number,

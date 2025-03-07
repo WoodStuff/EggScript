@@ -1,4 +1,4 @@
-﻿using EggScript.Parsing.Nodes.Expression.Data;
+﻿using EggScript.Parsing.Nodes.Expression;
 
 namespace EggScript.Parsing.Nodes.Statement;
 
@@ -6,10 +6,10 @@ namespace EggScript.Parsing.Nodes.Statement;
 /// A node that logs something.
 /// </summary>
 /// <param name="data">The value to log.</param>
-public class PrintNode(IDataNode data) : IStatementNode
+public class PrintNode(IExpressionNode data) : IStatementNode
 {
 	/// <summary>
 	/// The value to log.
 	/// </summary>
-	public IDataNode Data { get; } = data;
+	public IExpressionNode Data { get; } = data;
 }
