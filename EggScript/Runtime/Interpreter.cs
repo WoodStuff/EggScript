@@ -1,6 +1,7 @@
 ﻿using EggScript.Exceptions;
 using EggScript.Parsing;
 using EggScript.Parsing.Nodes;
+using EggScript.Parsing.Nodes.Statement;
 
 namespace EggScript.Runtime;
 
@@ -21,7 +22,7 @@ internal static class Interpreter
 			switch (node)
 			{
 				case PrintNode printNode:
-					Console.WriteLine(printNode.Value);
+					Console.WriteLine(printNode.Text.Value);
 					break;
 
 				default:

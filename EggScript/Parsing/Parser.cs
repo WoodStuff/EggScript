@@ -1,5 +1,6 @@
 ﻿using EggScript.Exceptions;
 using EggScript.Parsing.Nodes;
+using EggScript.Parsing.Nodes.Statement;
 using EggScript.Tokenization;
 
 namespace EggScript.Parsing;
@@ -49,8 +50,8 @@ internal class Parser(List<Token> tokens)
 		Token token = Next();
 		PrintNode node = token.Type switch
 		{
-			TokenType.String => new(token.Value),
-			TokenType.Number => new(token.Value),
+			TokenType.String => new(new(token.Value)),
+			TokenType.Number => new(new(token.Value)),
 			_ => throw new EggScriptException("String expected"),
 		};
 		if (!Match(TokenType.Punctuation, ")")) throw new EggScriptException(") expected");
@@ -59,6 +60,11 @@ internal class Parser(List<Token> tokens)
 
 		return node;
 	}
+
+	//private INode ParseExpression()
+	//{
+	//
+	//}
 
 	/// <summary>
 	/// Tries to detect what token is next based on the type and advances the queue if it's correct.
