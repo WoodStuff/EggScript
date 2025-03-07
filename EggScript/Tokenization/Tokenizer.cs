@@ -13,6 +13,7 @@ internal static partial class Tokenizer
 	/// </summary>
 	private static Dictionary<TokenType, Regex> Patterns { get; } = new Dictionary<TokenType, Regex> {
 		{ TokenType.Keyword, KeywordRegex() },
+		{ TokenType.FreeKeyword, FreeKeywordRegex() },
 		{ TokenType.Whitespace, WhitespaceRegex() },
 		{ TokenType.Punctuation, PunctuationRegex() },
 		{ TokenType.Operator, OperatorRegex() },
@@ -65,6 +66,8 @@ internal static partial class Tokenizer
 
 	[GeneratedRegex(@"^print\b")]
 	private static partial Regex KeywordRegex();
+	[GeneratedRegex(@"^(true|false)\b")]
+	private static partial Regex FreeKeywordRegex();
 	[GeneratedRegex(@"^\s+")]
 	private static partial Regex WhitespaceRegex();
 	[GeneratedRegex(@"^[\(\);]")]

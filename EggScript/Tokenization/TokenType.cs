@@ -10,6 +10,10 @@ internal enum TokenType
 	/// </summary>
 	Keyword,
 	/// <summary>
+	/// A reserved keyword that doesn't start a statement, like true or false.
+	/// </summary>
+	FreeKeyword,
+	/// <summary>
 	/// Characters that don't matter, like spaces, tabs, or newlines. Excluded from the tokenization.
 	/// </summary>
 	Whitespace,
