@@ -38,4 +38,18 @@ public static class Eggscript
 
 		Interpreter.Run(nodes);
 	}
+
+	/// <summary>
+	/// Displays the tokens of an .egg file.
+	/// </summary>
+	/// <param name="path">The path of the .egg file.</param>
+	/// <exception cref="EggScriptException">Thrown when the file is not an .egg file.</exception>
+	internal static void DisplayTokens(string path)
+	{
+		if (Path.GetExtension(path) != ".egg") throw new EggScriptException("File is not an .ege file.");
+
+		string data = File.ReadAllText(path);
+		var tokens = Tokenizer.Tokenize(data);
+		Console.WriteLine(string.Join('\n', tokens));
+	}
 }
