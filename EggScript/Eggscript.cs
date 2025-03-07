@@ -1,9 +1,8 @@
-﻿using EggScript.Parsing.Nodes;
+﻿using EggScript.Exceptions;
 using EggScript.Parsing;
+using EggScript.Parsing.Nodes.Statement;
 using EggScript.Runtime;
 using EggScript.Tokenization;
-using EggScript.Exceptions;
-using EggScript.Parsing.Nodes.Statement;
 
 namespace EggScript;
 
