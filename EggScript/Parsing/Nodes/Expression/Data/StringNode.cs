@@ -12,4 +12,6 @@ public class StringNode(string value) : IDataNode
 	public string Value { get; } = value;
 
 	object IDataNode.Value => Value;
+
+	public static StringNode operator +(StringNode left, StringNode right) => new(left.Value + right.Value);
 }
