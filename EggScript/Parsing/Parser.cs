@@ -58,6 +58,10 @@ internal class Parser(List<Token> tokens)
 		return node;
 	}
 
+	/// <summary>
+	/// Parses an expression.
+	/// </summary>
+	/// <returns>The node corresponding to that expression.</returns>
 	private IExpressionNode ParseExpression()
 	{
 		IExpressionNode data = ParsePrimitive();
@@ -69,6 +73,11 @@ internal class Parser(List<Token> tokens)
 		return data;
 	}
 
+	/// <summary>
+	/// Parses some data, such as a string or number.
+	/// </summary>
+	/// <returns>The node corresponding to that primitive.</returns>
+	/// <exception cref="EggScriptException">Thrown when the data is not a primitive.</exception>
 	private IDataNode ParsePrimitive()
 	{
 		Token token = Next();

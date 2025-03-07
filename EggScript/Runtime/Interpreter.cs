@@ -1,6 +1,5 @@
 ﻿using EggScript.Exceptions;
 using EggScript.Parsing;
-using EggScript.Parsing.Nodes;
 using EggScript.Parsing.Nodes.Expression;
 using EggScript.Parsing.Nodes.Expression.Data;
 using EggScript.Parsing.Nodes.Statement;
@@ -33,33 +32,42 @@ internal static class Interpreter
 		}
 	}
 
+	/// <summary>
+	/// Gets the value of an expression node.
+	/// </summary>
+	/// <param name="node">The expression node to evaluate.</param>
+	/// <returns>The value of the expression.</returns>
+	/// <exception cref="EggScriptException">Thrown when an invalid node is detected.</exception>
 	private static IDataNode GetValue(IExpressionNode node)
 	{
-		switch (node)
+		return node switch
 		{
-			case IDataNode dataNode:
-				return dataNode;
-
-			case OperatorNode operatorNode:
-				return ParseOperator(operatorNode);
-
-			default:
-				throw new EggScriptException("Invalid node");
-		}
+			IDataNode dataNode => dataNode,
+			OperatorNode operatorNode => ParseOperator(operatorNode),
+			_ => throw new EggScriptException("Tried to get value of an invalid node"),
+		};
 	}
 
+	/// <summary>
+	/// Calculates the result of an <see cref="OperatorNode"/>.
+	/// </summary>
+	/// <param name="node">The operator node to evaluate.</param>
+	/// <returns>The result of the operator.</returns>
+	/// <exception cref="EggScriptException">Thrown when an invalid use of operators is detected, for example wrong data types.</exception>
 	private static IDataNode ParseOperator(OperatorNode node)
 	{
+		string op = node.Operator;
 		IDataNode left = GetValue(node.Left);
 		IDataNode right = GetValue(node.Right);
 
-		switch ((left, right))
+		return op switch
 		{
-			case (NumberNode l, NumberNode r):
-				return new NumberNode(l.Value + r.Value);
-
-			default:
-				throw new EggScriptException("Invalid data types in operator");
-		}
+			"+" => (left, right) switch
+			{
+				(NumberNode l, NumberNode r) => new NumberNode(l.Value + r.Value),
+				_ => throw new EggScriptException("Invalid data types in operator"),
+			},
+			_ => throw new EggScriptException("Invalid operator"),
+		};
 	}
 }
