@@ -67,19 +67,29 @@ internal class Parser(List<Token> tokens)
 	private IExpressionNode ParseExpression()
 	{
 		IExpressionNode data = ParseLevel1();
+		return data;
+	}
+
+	/// <summary>
+	/// Parses an expression that supports addition or subtraction.
+	/// </summary>
+	/// <returns>The node corresponding to that expression.</returns>
+	private IExpressionNode ParseLevel1()
+	{
+		IExpressionNode data = ParseLevel2();
 		while (Match(TokenType.Operator, out string op, "+", "-"))
 		{
-			IExpressionNode right = ParseLevel1();
+			IExpressionNode right = ParseLevel2();
 			data = new OperatorNode(data, op, right);
 		}
 		return data;
 	}
 
 	/// <summary>
-	/// Parses an expression that supports multiplication.
+	/// Parses an expression that supports multiplication or division.
 	/// </summary>
 	/// <returns>The node corresponding to that expression.</returns>
-	private IExpressionNode ParseLevel1()
+	private IExpressionNode ParseLevel2()
 	{
 		IExpressionNode data = ParsePrimitive();
 		while (Match(TokenType.Operator, out string op, "*", "/"))
