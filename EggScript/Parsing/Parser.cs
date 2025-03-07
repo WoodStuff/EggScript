@@ -1,6 +1,5 @@
 ﻿using EggScript.Exceptions;
-using EggScript.Parsing.Nodes;
-using EggScript.Parsing.Nodes.Data;
+using EggScript.Parsing.Nodes.Expression.Data;
 using EggScript.Parsing.Nodes.Statement;
 using EggScript.Tokenization;
 

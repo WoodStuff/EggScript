@@ -1,4 +1,4 @@
-﻿namespace EggScript.Parsing.Nodes.Data;
+﻿namespace EggScript.Parsing.Nodes.Expression.Data;
 
 /// <summary>
 /// Represents a data node that holds a number.

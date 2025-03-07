@@ -1,4 +1,4 @@
-﻿using EggScript.Parsing.Nodes.Data;
+﻿using EggScript.Parsing.Nodes.Expression.Data;
 
 namespace EggScript.Parsing.Nodes.Statement;
 
