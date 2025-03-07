@@ -80,10 +80,10 @@ internal class Parser(List<Token> tokens)
 	private IExpressionNode ParseLevel1()
 	{
 		IExpressionNode data = ParsePrimitive();
-		while (Match(TokenType.Operator, "*"))
+		while (Match(TokenType.Operator, out string op, "*", "/"))
 		{
 			IDataNode right = ParsePrimitive();
-			data = new OperatorNode(data, "*", right);
+			data = new OperatorNode(data, op, right);
 		}
 		return data;
 	}
