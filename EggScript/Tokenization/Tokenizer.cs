@@ -53,7 +53,7 @@ internal static partial class Tokenizer
 		}
 
 		tokens.Add(new Token(TokenType.EOF, ""));
-
+		
 		return tokens;
 	}
 
@@ -70,14 +70,14 @@ internal static partial class Tokenizer
 	private static partial Regex FreeKeywordRegex();
 	[GeneratedRegex(@"^\s+")]
 	private static partial Regex WhitespaceRegex();
+	[GeneratedRegex(@"^\/\/.*|^\/\*[\s\S]*?\*\/")]
+	private static partial Regex CommentRegex();
 	[GeneratedRegex(@"^[\(\);]")]
 	private static partial Regex PunctuationRegex();
-	[GeneratedRegex(@"^[+\-*/]")]
+	[GeneratedRegex(@"^(\+|\-|\*|/)")]
 	private static partial Regex OperatorRegex();
 	[GeneratedRegex(@"^\d*\.?\d+")]
 	private static partial Regex NumberRegex();
 	[GeneratedRegex(@"^""[^""]*""")]
 	private static partial Regex StringRegex();
-	[GeneratedRegex(@"^\/\/.*|\/\*[\s\S]*?\*\/")]
-	private static partial Regex CommentRegex();
 }
