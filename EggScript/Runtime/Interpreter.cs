@@ -73,6 +73,11 @@ internal static class Interpreter
 				(NumberNode l, NumberNode r) => new NumberNode(l.Value - r.Value),
 				_ => throw new EggScriptException("Invalid data types in operator"),
 			},
+			"*" => (left, right) switch
+			{
+				(NumberNode l, NumberNode r) => new NumberNode(l.Value * r.Value),
+				_ => throw new EggScriptException("Invalid data types in operator"),
+			},
 			_ => throw new EggScriptException("Invalid operator"),
 		};
 	}

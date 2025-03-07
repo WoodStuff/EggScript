@@ -64,11 +64,26 @@ internal class Parser(List<Token> tokens)
 	/// <returns>The node corresponding to that expression.</returns>
 	private IExpressionNode ParseExpression()
 	{
+		IExpressionNode data = ParseLevel1();
+		while (Match(TokenType.Operator, out string op, "+", "-"))
+		{
+			IExpressionNode right = ParseLevel1();
+			data = new OperatorNode(data, op, right);
+		}
+		return data;
+	}
+
+	/// <summary>
+	/// Parses an expression that supports multiplication.
+	/// </summary>
+	/// <returns>The node corresponding to that expression.</returns>
+	private IExpressionNode ParseLevel1()
+	{
 		IExpressionNode data = ParsePrimitive();
-		while (Match(TokenType.Operator, out string op))
+		while (Match(TokenType.Operator, "*"))
 		{
 			IDataNode right = ParsePrimitive();
-			data = new OperatorNode(data, op, right);
+			data = new OperatorNode(data, "*", right);
 		}
 		return data;
 	}
@@ -116,6 +131,23 @@ internal class Parser(List<Token> tokens)
 	{
 		if (CurrentToken.Type != type || CurrentToken.Value != value) return false;
 
+		Index++;
+		return true;
+	}
+
+	/// <summary>
+	/// Tries to detect what token is next based on the type and values and advances the queue if it's correct.
+	/// </summary>
+	/// <param name="type">What type the next token is predicted to be.</param>
+	/// <param name="value">If successful, the value of the token.</param>
+	/// <param name="values">What values the next token is predicted to be.</param>
+	/// <returns>If the next token in the queue is of type <paramref name="type"/> and has a value in <paramref name="values"/>.</returns>
+	private bool Match(TokenType type, out string value, params string[] values)
+	{
+		value = "";
+		if (CurrentToken.Type != type || !values.Contains(CurrentToken.Value)) return false;
+
+		value = CurrentToken.Value;
 		Index++;
 		return true;
 	}
