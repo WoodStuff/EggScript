@@ -42,21 +42,7 @@ internal class Parser(List<Token> tokens)
 	/// </summary>
 	/// <returns>The node corresponding to that statement.</returns>
 	/// <exception cref="EggScriptException">Thrown when a syntax error is detected.</exception>
-	public INode ParseStatement()
-	{
-		INode action = ParseAction();
-
-		if (!Match(TokenType.Punctuation, ";")) throw new EggScriptException("; expected");
-
-		return action;
-	}
-
-	/// <summary>
-	/// Parses an action.
-	/// </summary>
-	/// <returns>The node corresponding to that action.</returns>
-	/// <exception cref="EggScriptException">Thrown when a syntax error is detected.</exception>
-	public INode ParseAction()
+	public IStatementNode ParseStatement()
 	{
 		if (!Match(TokenType.Keyword, "print")) throw new EggScriptException("Statement must start from a keyword");
 		if (!Match(TokenType.Punctuation, "(")) throw new EggScriptException("( expected");
@@ -68,6 +54,8 @@ internal class Parser(List<Token> tokens)
 			_ => throw new EggScriptException("String expected"),
 		};
 		if (!Match(TokenType.Punctuation, ")")) throw new EggScriptException(") expected");
+
+		if (!Match(TokenType.Punctuation, ";")) throw new EggScriptException("; expected");
 
 		return node;
 	}

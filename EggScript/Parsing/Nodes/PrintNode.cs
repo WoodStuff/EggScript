@@ -4,7 +4,7 @@
 /// A node that logs something.
 /// </summary>
 /// <param name="value">The value to log.</param>
-public class PrintNode(string value) : INode
+public class PrintNode(string value) : IStatementNode
 {
 	/// <summary>
 	/// The value to log.
