@@ -70,7 +70,7 @@ internal static partial class Tokenizer
 	private static partial Regex FreeKeywordRegex();
 	[GeneratedRegex(@"^\s+")]
 	private static partial Regex WhitespaceRegex();
-	[GeneratedRegex(@"^\/\/.*|^\/\*[\s\S]*?\*\/")]
+	[GeneratedRegex(@"^//.*|^/\*[\s\S]*?\*/")]
 	private static partial Regex CommentRegex();
 	[GeneratedRegex(@"^[\(\);]")]
 	private static partial Regex PunctuationRegex();
