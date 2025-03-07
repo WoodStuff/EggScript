@@ -3,6 +3,7 @@ using EggScript.Parsing;
 using EggScript.Runtime;
 using EggScript.Tokenization;
 using EggScript.Exceptions;
+using EggScript.Parsing.Nodes.Statement;
 
 namespace EggScript;
 
@@ -33,7 +34,7 @@ public static class Eggscript
 		var tokens = Tokenizer.Tokenize(source);
 
 		Parser parser = new(tokens);
-		List<INode> nodes = parser.Parse();
+		List<IStatementNode> nodes = parser.Parse();
 
 		Interpreter.Run(nodes);
 	}

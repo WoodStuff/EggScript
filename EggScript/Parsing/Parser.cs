@@ -29,9 +29,9 @@ internal class Parser(List<Token> tokens)
 	/// Parses the <see cref="Tokens"/> into an abstract syntax tree.
 	/// </summary>
 	/// <returns>A list of nodes make from the tokens.</returns>
-	public List<INode> Parse()
+	public List<IStatementNode> Parse()
 	{
-		List<INode> nodes = [];
+		List<IStatementNode> nodes = [];
 		while (!Match(TokenType.EOF, out _))
 		{
 			nodes.Add(ParseStatement());
