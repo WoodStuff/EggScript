@@ -20,4 +20,7 @@ public class NumberNode : IDataNode
 	public static NumberNode operator *(NumberNode left, NumberNode right) => new(left.Value * right.Value);
 	public static NumberNode operator /(NumberNode left, NumberNode right) => new(left.Value / right.Value);
 
+	public override string ToString() => $"""
+NumberNode ( Value: {Value} )
+""";
 }

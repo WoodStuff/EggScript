@@ -14,4 +14,8 @@ public class BooleanNode : IDataNode
 
 	public BooleanNode(bool value) => Value = value;
 	public BooleanNode(string value) => Value = bool.Parse(value);
+
+	public override string ToString() => $"""
+BooleanNode ( Value: {Value} )
+""";
 }

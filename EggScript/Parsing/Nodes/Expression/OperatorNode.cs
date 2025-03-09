@@ -17,4 +17,13 @@ public class OperatorNode(IExpressionNode left, string op, IExpressionNode right
 	/// The right expression.
 	/// </summary>
 	public IExpressionNode Right { get; } = right;
+
+	public override string ToString() => $"""
+OperatorNode
+(
+Operator: {Operator}
+Left: {Left}
+Right: {Right}
+)
+""";
 }

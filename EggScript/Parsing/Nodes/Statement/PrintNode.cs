@@ -12,4 +12,11 @@ public class PrintNode(IExpressionNode data) : IStatementNode
 	/// The value to log.
 	/// </summary>
 	public IExpressionNode Data { get; } = data;
+
+	public override string ToString() => $"""
+PrintNode
+(
+Value: {Data}
+)
+""";
 }

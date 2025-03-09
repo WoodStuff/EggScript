@@ -49,6 +49,25 @@ public static class Eggscript
 
 		string data = File.ReadAllText(path);
 		var tokens = Tokenizer.Tokenize(data);
+
 		Console.WriteLine(string.Join('\n', tokens));
+	}
+
+	/// <summary>
+	/// Displays the AST of an .egg file.
+	/// </summary>
+	/// <param name="path">The path of the .egg file.</param>
+	/// <exception cref="EggScriptException">Thrown when the file is not an .egg file.</exception>
+	internal static void DisplayAST(string path)
+	{
+		if (Path.GetExtension(path) != ".egg") throw new EggScriptException("File is not an .ege file.");
+
+		string data = File.ReadAllText(path);
+		var tokens = Tokenizer.Tokenize(data);
+
+		Parser parser = new(tokens);
+		List<IStatementNode> nodes = parser.Parse();
+
+		Console.WriteLine(string.Join('\n', nodes));
 	}
 }
