@@ -22,3 +22,7 @@ print(true | true); // True
 print(false & false); // False
 print(false & true); // False
 print(true & true); // True
+print(2 == 2); // True
+print(2 == 3); // False
+print(2 != 2); // False
+print(2 != 3); // True
