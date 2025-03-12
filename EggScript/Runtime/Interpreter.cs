@@ -44,6 +44,7 @@ internal static class Interpreter
 		{
 			IDataNode dataNode => dataNode,
 			OperatorNode operatorNode => ParseOperator(operatorNode),
+			UnaryOpNode unaryOpNode => ParseOperator(unaryOpNode),
 			_ => throw new EggScriptException("Tried to get value of an invalid node"),
 		};
 	}
@@ -81,6 +82,33 @@ internal static class Interpreter
 			"/" => (left, right) switch
 			{
 				(NumberNode l, NumberNode r) => l / r,
+				_ => throw new EggScriptException("Invalid data types in operator"),
+			},
+			_ => throw new EggScriptException("Invalid operator"),
+		};
+	}
+
+	/// <summary>
+	/// Calculates the result of an <see cref="UnaryOpNode"/>.
+	/// </summary>
+	/// <param name="node">The operator node to evaluate.</param>
+	/// <returns>The result of the operator.</returns>
+	/// <exception cref="EggScriptException">Thrown when an invalid use of operators is detected, for example wrong data types.</exception>
+	private static IDataNode ParseOperator(UnaryOpNode node)
+	{
+		string op = node.Operator;
+		IDataNode operand = GetValue(node.Operand);
+
+		return op switch
+		{
+			"+" => operand switch
+			{
+				NumberNode n => +n,
+				_ => throw new EggScriptException("Invalid data types in operator"),
+			},
+			"-" => operand switch
+			{
+				NumberNode n => -n,
 				_ => throw new EggScriptException("Invalid data types in operator"),
 			},
 			_ => throw new EggScriptException("Invalid operator"),

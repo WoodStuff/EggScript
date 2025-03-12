@@ -1,4 +1,6 @@
-﻿namespace EggScript.Parsing.Nodes.Expression.Data;
+﻿using System.Runtime.CompilerServices;
+
+namespace EggScript.Parsing.Nodes.Expression.Data;
 
 /// <summary>
 /// Represents a data node that holds a number.
@@ -19,6 +21,9 @@ public class NumberNode : IDataNode
 	public static NumberNode operator -(NumberNode left, NumberNode right) => new(left.Value - right.Value);
 	public static NumberNode operator *(NumberNode left, NumberNode right) => new(left.Value * right.Value);
 	public static NumberNode operator /(NumberNode left, NumberNode right) => new(left.Value / right.Value);
+
+	public static NumberNode operator +(NumberNode node) => node;
+	public static NumberNode operator -(NumberNode node) => new(-node.Value);
 
 	public override string ToString() => $"""
 NumberNode ( Value: {Value} )
