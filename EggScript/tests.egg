@@ -1,5 +1,7 @@
 print("hello"); // hello
 print(5); // 5
+print(true); // True
+print(false); // False
 print(15 + 5); // 20
 print(15 - 5); // 10
 print(15 * 5); // 75
@@ -12,3 +14,11 @@ print(+5); // 5
 print(-5); // -5
 print(--5); // 5
 print(5 + -3); // 2
+print(!true); // False
+print(!false); // True
+print(false | false); // False
+print(false | true); // True
+print(true | true); // True
+print(false & false); // False
+print(false & true); // False
+print(true & true); // True

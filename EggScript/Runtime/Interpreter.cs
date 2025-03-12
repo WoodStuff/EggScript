@@ -84,6 +84,16 @@ internal static class Interpreter
 				(NumberNode l, NumberNode r) => l / r,
 				_ => throw new EggScriptException("Invalid data types in operator"),
 			},
+			"&" => (left, right) switch
+			{
+				(BooleanNode l, BooleanNode r) => l & r,
+				_ => throw new EggScriptException("Invalid data types in operator"),
+			},
+			"|" => (left, right) switch
+			{
+				(BooleanNode l, BooleanNode r) => l | r,
+				_ => throw new EggScriptException("Invalid data types in operator"),
+			},
 			_ => throw new EggScriptException("Invalid operator"),
 		};
 	}
@@ -109,6 +119,11 @@ internal static class Interpreter
 			"-" => operand switch
 			{
 				NumberNode n => -n,
+				_ => throw new EggScriptException("Invalid data types in operator"),
+			},
+			"!" => operand switch
+			{
+				BooleanNode n => !n,
 				_ => throw new EggScriptException("Invalid data types in operator"),
 			},
 			_ => throw new EggScriptException("Invalid operator"),
