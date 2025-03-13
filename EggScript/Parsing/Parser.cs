@@ -123,7 +123,7 @@ internal class Parser(List<Token> tokens)
 		IStatementNode node;
 		if (expr is OperatorNode { Left: VariableNode var } operatorNode && operatorNode.Operator == "=")
 		{
-			node = new VarAssignmentNode(var.Value, operatorNode.Right);
+			node = new VarAssignmentNode(var.Name, operatorNode.Right);
 		}
 		else throw new EggSyntaxException("Only keywords or assignment expressions can be used as a statement");
 		return node;
