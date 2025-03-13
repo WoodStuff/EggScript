@@ -11,6 +11,9 @@ namespace EggScript.Runtime;
 /// </summary>
 internal static class Interpreter
 {
+	/// <summary>
+	/// The declared variables and their values.
+	/// </summary>
 	private static Dictionary<string, IDataNode> Variables { get; } = [];
 
 	/// <summary>

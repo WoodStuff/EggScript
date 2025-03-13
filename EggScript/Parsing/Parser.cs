@@ -73,6 +73,12 @@ internal class Parser(List<Token> tokens)
 		return node;
 	}
 
+	/// <summary>
+	/// Parses a statement starting from a keyword.
+	/// </summary>
+	/// <param name="keyword">The keyword the statement starts from.</param>
+	/// <returns>The node corresponding to that statement.</returns>
+	/// <exception cref="EggSyntaxException">Thrown when a syntax error is detected.</exception>
 	private IStatementNode ParseKeywordStatement(string keyword)
 	{
 		IStatementNode node;
@@ -106,6 +112,12 @@ internal class Parser(List<Token> tokens)
 		return node;
 	}
 
+	/// <summary>
+	/// Parses a statement that is an expression, like a variable assignment statement.
+	/// </summary>
+	/// <param name="expr">The statement's expression.</param>
+	/// <returns>The node corresponding to that statement.</returns>
+	/// <exception cref="EggSyntaxException">Thrown when a syntax error is detected.</exception>
 	private static IStatementNode ParseExprStatement(IExpressionNode expr)
 	{
 		IStatementNode node;
