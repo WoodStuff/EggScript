@@ -187,10 +187,10 @@ internal class Parser(List<Token> tokens)
 	/// </summary>
 	/// <returns>The node corresponding to that primitive.</returns>
 	/// <exception cref="EggSyntaxException">Thrown when the data is not a primitive.</exception>
-	private IDataNode ParsePrimitive()
+	private IExpressionNode ParsePrimitive()
 	{
 		Token token = Next();
-		IDataNode node = token.Type switch
+		IExpressionNode node = token.Type switch
 		{
 			TokenType.String => new StringNode(token.Value),
 			TokenType.Number => new NumberNode(token.Value),
