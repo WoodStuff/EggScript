@@ -1,4 +1,4 @@
-﻿namespace EggScript.Parsing.Nodes.Expression.Data;
+﻿namespace EggScript.Parsing.Nodes.Expression;
 
 /// <summary>
 /// Represents a variable node.
