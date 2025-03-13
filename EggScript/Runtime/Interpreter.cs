@@ -32,8 +32,12 @@ internal static class Interpreter
 					AddVariable(varDeclarationNode.Name, GetValue(varDeclarationNode.Data));
 					break;
 
+				case VarAssignmentNode varAssignmentNode:
+					ModifyVariable(varAssignmentNode.Name, GetValue(varAssignmentNode.Data));
+					break;
+
 				default:
-					throw new EggRuntimeException("Invalid node");
+					throw new EggRuntimeException($"Invalid node: {node.GetType().Name}");
 			}
 		}
 	}
@@ -52,7 +56,7 @@ internal static class Interpreter
 			IDataNode dataNode => dataNode,
 			OperatorNode operatorNode => ParseOperator(operatorNode),
 			UnaryOpNode unaryOpNode => ParseOperator(unaryOpNode),
-			_ => throw new EggRuntimeException("Tried to get value of an invalid node"),
+			_ => throw new EggRuntimeException($"Tried to get value of an invalid node: {node.GetType().Name}"),
 		};
 	}
 
@@ -118,22 +122,27 @@ internal static class Interpreter
 			">" => (left, right) switch
 			{
 				(NumberNode l, NumberNode r) => l > r,
-				_ => throw new EggRuntimeException("Invlaid data types in operator"),
+				_ => throw new EggRuntimeException("Invalid data types in operator"),
 			},
 			"<" => (left, right) switch
 			{
 				(NumberNode l, NumberNode r) => l < r,
-				_ => throw new EggRuntimeException("Invlaid data types in operator"),
+				_ => throw new EggRuntimeException("Invalid data types in operator"),
 			},
 			">=" => (left, right) switch
 			{
 				(NumberNode l, NumberNode r) => l >= r,
-				_ => throw new EggRuntimeException("Invlaid data types in operator"),
+				_ => throw new EggRuntimeException("Invalid data types in operator"),
 			},
 			"<=" => (left, right) switch
 			{
 				(NumberNode l, NumberNode r) => l <= r,
-				_ => throw new EggRuntimeException("Invlaid data types in operator"),
+				_ => throw new EggRuntimeException("Invalid data types in operator"),
+			},
+			"=" => node.Left switch
+			{
+				VariableNode l => ModifyVariable(l.Value, right),
+				_ => throw new EggRuntimeException("Invalid data types in operator"),
 			},
 			_ => throw new EggRuntimeException("Invalid operator"),
 		};
@@ -180,5 +189,12 @@ internal static class Interpreter
 	{
 		if (!Variables.TryGetValue(name, out IDataNode? var)) throw new EggRuntimeException($"Variable {name} was not found");
 		return var;
+	}
+	
+	private static IDataNode ModifyVariable(string name, IDataNode data)
+	{
+		if (!Variables.ContainsKey(name)) throw new EggRuntimeException($"Variable {name} was not found");
+		Variables[name] = data;
+		return data;
 	}
 }

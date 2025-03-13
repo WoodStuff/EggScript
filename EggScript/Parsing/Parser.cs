@@ -15,12 +15,13 @@ internal class Parser(List<Token> tokens)
 	private static readonly string[] booleans = ["true", "false"];
 	private static readonly Dictionary<int, string[]> operators = new()
 	{
-		{ 0, ["&"] },
-		{ 1, ["|"] },
-		{ 2, ["==", "!="] },
-		{ 3, [">=", "<=", ">", "<"] },
-		{ 4, ["+", "-"] },
-		{ 5, ["*", "/"] },
+		{ 0, ["="] },
+		{ 1, ["&"] },
+		{ 2, ["|"] },
+		{ 3, ["==", "!="] },
+		{ 4, [">=", "<=", ">", "<"] },
+		{ 5, ["+", "-"] },
+		{ 6, ["*", "/"] },
 	};
 	private static readonly string[] unaryOperators = ["+", "-", "!"];
 
@@ -59,8 +60,22 @@ internal class Parser(List<Token> tokens)
 	public IStatementNode ParseStatement()
 	{
 		IStatementNode node;
-		if (!Match(TokenType.Keyword, out string keyword)) throw new EggSyntaxException("Statement must start from a keyword");
 
+		if (Match(TokenType.Keyword, out string keyword)) node = ParseKeywordStatement(keyword);
+		else
+		{
+			IExpressionNode expr = ParseExpression();
+			node = ParseExprStatement(expr);
+		}
+
+		if (!Match(TokenType.Punctuation, ";")) throw new EggSyntaxException("; expected");
+
+		return node;
+	}
+
+	private IStatementNode ParseKeywordStatement(string keyword)
+	{
+		IStatementNode node;
 		switch (keyword)
 		{
 			case "print":
@@ -88,9 +103,17 @@ internal class Parser(List<Token> tokens)
 			default:
 				throw new EggSyntaxException("Invalid keyword");
 		}
+		return node;
+	}
 
-		if (!Match(TokenType.Punctuation, ";")) throw new EggSyntaxException("; expected");
-
+	private static IStatementNode ParseExprStatement(IExpressionNode expr)
+	{
+		IStatementNode node;
+		if (expr is OperatorNode { Left: VariableNode var } operatorNode && operatorNode.Operator == "=")
+		{
+			node = new VarAssignmentNode(var.Value, operatorNode.Right);
+		}
+		else throw new EggSyntaxException("Only keywords or assignment expressions can be used as a statement");
 		return node;
 	}
 

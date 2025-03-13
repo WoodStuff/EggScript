@@ -3,11 +3,11 @@
 namespace EggScript.Parsing.Nodes.Statement;
 
 /// <summary>
-/// A node that declares a variable.
+/// A node that modifies a variable.
 /// </summary>
 /// <param name="name">The name of the variable.</param>
 /// <param name="data">The value to assign to the variable.</param>
-public class VarDeclarationNode(string name, IExpressionNode data) : IStatementNode
+public class VarAssignmentNode(string name, IExpressionNode data) : IStatementNode
 {
 	/// <summary>
 	/// The name of the variable.
@@ -22,7 +22,7 @@ public class VarDeclarationNode(string name, IExpressionNode data) : IStatementN
 	{
 		string data = Data.ToString()!.Replace("\n", "\n    ");
 		return $"""
-VarDeclarationNode
+VarAssignmentNode
 (
     Name: {Name}
     Data: {data}
