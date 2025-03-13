@@ -2,8 +2,10 @@
 A language I made because I felt like it. Built in C#.
 
 ## Features
-- Recognizes strings and numbers
+- Recognizes strings and numbers and booleans
 - Operators, including a string concatenation operator (yay!)
+- Unary operators (was hard to make)
+- Parentheses (hard thing I made without chatgpt help :))
 - Print keyword that prints stuff to the console
 - Fully functional comments, both the // kind and the /* */ kind
 - Mandatory semicolons, because I'm addicted to those
