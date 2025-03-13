@@ -21,6 +21,10 @@ public class NumberNode : IDataNode
 	public static NumberNode operator -(NumberNode left, NumberNode right) => new(left.Value - right.Value);
 	public static NumberNode operator *(NumberNode left, NumberNode right) => new(left.Value * right.Value);
 	public static NumberNode operator /(NumberNode left, NumberNode right) => new(left.Value / right.Value);
+	public static BooleanNode operator >(NumberNode left, NumberNode right) => new(left.Value > right.Value);
+	public static BooleanNode operator <(NumberNode left, NumberNode right) => new(left.Value < right.Value);
+	public static BooleanNode operator >=(NumberNode left, NumberNode right) => new(left.Value >= right.Value);
+	public static BooleanNode operator <=(NumberNode left, NumberNode right) => new(left.Value <= right.Value);
 
 	public static NumberNode operator +(NumberNode node) => node;
 	public static NumberNode operator -(NumberNode node) => new(-node.Value);

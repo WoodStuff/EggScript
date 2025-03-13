@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using EggScript.Exceptions;
+﻿using EggScript.Exceptions;
 using EggScript.Parsing;
 using EggScript.Parsing.Nodes.Expression;
 using EggScript.Parsing.Nodes.Expression.Data;
@@ -108,6 +107,26 @@ internal static class Interpreter
 				(NumberNode l, NumberNode r) => new BooleanNode(l.Value != r.Value),
 				(BooleanNode l, BooleanNode r) => new BooleanNode(l.Value != r.Value),
 				_ => throw new EggRuntimeException("Invalid data types in operator"),
+			},
+			">" => (left, right) switch
+			{
+				(NumberNode l, NumberNode r) => l > r,
+				_ => throw new EggRuntimeException("Invlaid data types in operator"),
+			},
+			"<" => (left, right) switch
+			{
+				(NumberNode l, NumberNode r) => l < r,
+				_ => throw new EggRuntimeException("Invlaid data types in operator"),
+			},
+			">=" => (left, right) switch
+			{
+				(NumberNode l, NumberNode r) => l >= r,
+				_ => throw new EggRuntimeException("Invlaid data types in operator"),
+			},
+			"<=" => (left, right) switch
+			{
+				(NumberNode l, NumberNode r) => l <= r,
+				_ => throw new EggRuntimeException("Invlaid data types in operator"),
 			},
 			_ => throw new EggRuntimeException("Invalid operator"),
 		};

@@ -18,8 +18,9 @@ internal class Parser(List<Token> tokens)
 		{ 0, ["&"] },
 		{ 1, ["|"] },
 		{ 2, ["==", "!="] },
-		{ 3, ["+", "-"] },
-		{ 4, ["*", "/"] },
+		{ 3, [">=", "<=", ">", "<"] },
+		{ 4, ["+", "-"] },
+		{ 5, ["*", "/"] },
 	};
 	private static readonly string[] unaryOperators = ["+", "-", "!"];
 
