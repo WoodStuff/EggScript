@@ -1,7 +1,7 @@
 ﻿namespace EggScript.Exceptions;
 
 /// <summary>
-/// Thrown when an error related to running EggScript occurs.
+/// Thrown when an error related to EggScript occurs.
 /// </summary>
 public class EggScriptException : Exception
 {

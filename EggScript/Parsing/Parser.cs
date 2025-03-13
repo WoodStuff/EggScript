@@ -54,17 +54,17 @@ internal class Parser(List<Token> tokens)
 	/// Parses a statement.
 	/// </summary>
 	/// <returns>The node corresponding to that statement.</returns>
-	/// <exception cref="EggScriptException">Thrown when a syntax error is detected.</exception>
+	/// <exception cref="EggSyntaxException">Thrown when a syntax error is detected.</exception>
 	public IStatementNode ParseStatement()
 	{
-		if (!Match(TokenType.Keyword, "print")) throw new EggScriptException("Statement must start from a keyword");
-		if (!Match(TokenType.Punctuation, "(")) throw new EggScriptException("( expected");
+		if (!Match(TokenType.Keyword, "print")) throw new EggSyntaxException("Statement must start from a keyword");
+		if (!Match(TokenType.Punctuation, "(")) throw new EggSyntaxException("( expected");
 
 		IExpressionNode data = ParseExpression();
 		PrintNode node = new(data);
 
-		if (!Match(TokenType.Punctuation, ")")) throw new EggScriptException(") expected");
-		if (!Match(TokenType.Punctuation, ";")) throw new EggScriptException("; expected");
+		if (!Match(TokenType.Punctuation, ")")) throw new EggSyntaxException(") expected");
+		if (!Match(TokenType.Punctuation, ";")) throw new EggSyntaxException("; expected");
 
 		return node;
 	}
@@ -117,7 +117,7 @@ internal class Parser(List<Token> tokens)
 	/// Parses some data, such as a string or number.
 	/// </summary>
 	/// <returns>The node corresponding to that primitive.</returns>
-	/// <exception cref="EggScriptException">Thrown when the data is not a primitive.</exception>
+	/// <exception cref="EggSyntaxException">Thrown when the data is not a primitive.</exception>
 	private IDataNode ParsePrimitive()
 	{
 		Token token = Next();
@@ -125,8 +125,8 @@ internal class Parser(List<Token> tokens)
 		{
 			TokenType.String => new StringNode(token.Value),
 			TokenType.Number => new NumberNode(token.Value),
-			TokenType.FreeKeyword => booleans.Contains(token.Value) ? new BooleanNode(token.Value) : throw new EggScriptException("Expression expected"),
-			_ => throw new EggScriptException("Expression expected"),
+			TokenType.FreeKeyword => booleans.Contains(token.Value) ? new BooleanNode(token.Value) : throw new EggSyntaxException("Expression expected"),
+			_ => throw new EggSyntaxException("Expression expected"),
 		};
 		return node;
 	}

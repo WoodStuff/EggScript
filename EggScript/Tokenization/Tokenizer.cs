@@ -49,7 +49,7 @@ internal static partial class Tokenizer
 				break;
 			}
 
-			if (!found) throw new EggScriptException($"Unexpected character found at position {offset}: {source[offset]}");
+			if (!found) throw new EggInvalidTokenException($"Unexpected character found", offset, source[offset]);
 		}
 
 		tokens.Add(new Token(TokenType.EOF, ""));

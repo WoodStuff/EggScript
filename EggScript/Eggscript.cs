@@ -18,7 +18,7 @@ public static class Eggscript
 	/// <exception cref="EggScriptException">Thrown when the file is not an .egg file.</exception>
 	public static void Execute(string path)
 	{
-		if (Path.GetExtension(path) != ".egg") throw new EggScriptException("File is not an .ege file.");
+		if (Path.GetExtension(path) != ".egg") throw new EggFiletypeException();
 
 		string data = File.ReadAllText(path);
 		ExecuteDirect(data);
@@ -45,7 +45,7 @@ public static class Eggscript
 	/// <exception cref="EggScriptException">Thrown when the file is not an .egg file.</exception>
 	internal static void DisplayTokens(string path)
 	{
-		if (Path.GetExtension(path) != ".egg") throw new EggScriptException("File is not an .ege file.");
+		if (Path.GetExtension(path) != ".egg") throw new EggFiletypeException();
 
 		string data = File.ReadAllText(path);
 		var tokens = Tokenizer.Tokenize(data);
