@@ -15,11 +15,11 @@ internal class Parser(List<Token> tokens)
 	private static readonly string[] booleans = ["true", "false"];
 	private static readonly Dictionary<int, string[]> operators = new()
 	{
-		{ 0, ["==", "!="] },
-		{ 1, ["+", "-"] },
-		{ 2, ["*", "/"] },
-		{ 3, ["&"] },
-		{ 4, ["|"] },
+		{ 0, ["&"] },
+		{ 1, ["|"] },
+		{ 2, ["==", "!="] },
+		{ 3, ["+", "-"] },
+		{ 4, ["*", "/"] },
 	};
 	private static readonly string[] unaryOperators = ["+", "-", "!"];
 
