@@ -84,7 +84,7 @@ internal class Parser(List<Token> tokens)
 	/// </summary>
 	/// <param name="level">The operator precedence level to start at.</param>
 	/// <returns>The node corresponding to that expression.</returns>
-	private IExpressionNode ParseOperator(int level = 0)
+	private IExpressionNode ParseOperator(int level = 0, bool parentheses = false)
 	{
 		IExpressionNode data = GetLowerExpression(level);
 		while (Match(TokenType.Operator, out string op, operators[level]))
@@ -92,9 +92,18 @@ internal class Parser(List<Token> tokens)
 			IExpressionNode right = GetLowerExpression(level);
 			data = new OperatorNode(data, op, right);
 		}
+		if (parentheses && level == 0) Match(TokenType.Punctuation, ")");
 		return data;
 
-		IExpressionNode GetLowerExpression(int level) => level == operators.Count - 1 ? ParseUnary() : ParseOperator(level + 1);
+		IExpressionNode GetLowerExpression(int level)
+		{
+			if (level == operators.Count - 1)
+			{
+				if (Match(TokenType.Punctuation, "(")) return ParseOperator(0, true);
+				return ParseUnary();
+			}
+			return ParseOperator(level + 1);
+		}
 	}
 
 	/// <summary>
@@ -106,7 +115,7 @@ internal class Parser(List<Token> tokens)
 		IExpressionNode node;
 		if (Match(TokenType.Operator, out string op, unaryOperators))
 		{
-			IExpressionNode value = ParseUnary();
+			IExpressionNode value = Match(TokenType.Punctuation, "(") ? ParseOperator(0, true) : ParseUnary();
 			node = new UnaryOpNode(op, value);
 			return node;
 		}
