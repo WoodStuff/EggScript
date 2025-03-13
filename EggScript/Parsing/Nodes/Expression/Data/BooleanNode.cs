@@ -20,7 +20,5 @@ public class BooleanNode : IDataNode
 
 	public static BooleanNode operator !(BooleanNode node) => new(!node.Value);
 
-	public override string ToString() => $"""
-BooleanNode ( Value: {Value} )
-""";
+	public override string ToString() => $"""BooleanNode ({Value})""";
 }

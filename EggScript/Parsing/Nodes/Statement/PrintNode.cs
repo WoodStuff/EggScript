@@ -13,10 +13,14 @@ public class PrintNode(IExpressionNode data) : IStatementNode
 	/// </summary>
 	public IExpressionNode Data { get; } = data;
 
-	public override string ToString() => $"""
+	public override string ToString()
+	{
+		string data = Data.ToString()!.Replace("\n", "\n    ");
+		return $"""
 PrintNode
 (
-Value: {Data}
+    Value: {data}
 )
 """;
+	}
 }

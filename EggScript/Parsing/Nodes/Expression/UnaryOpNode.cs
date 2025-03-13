@@ -14,11 +14,15 @@ public class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 	/// </summary>
 	public IExpressionNode Operand { get; } = value;
 
-	public override string ToString() => $"""
+	public override string ToString()
+	{
+		string operand = Operand.ToString()!.Replace("\n", "\n    ");
+		return $"""
 UnaryOpNode
 (
-	Operator: {Operator}
-	Value: {Operand}
+    Operator: {Operator}
+    Value: {operand}
 )
 """;
+	}
 }

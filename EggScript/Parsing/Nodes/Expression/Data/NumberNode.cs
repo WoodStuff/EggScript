@@ -25,7 +25,5 @@ public class NumberNode : IDataNode
 	public static NumberNode operator +(NumberNode node) => node;
 	public static NumberNode operator -(NumberNode node) => new(-node.Value);
 
-	public override string ToString() => $"""
-NumberNode ( Value: {Value} )
-""";
+	public override string ToString() => $"""NumberNode ({Value})""";
 }

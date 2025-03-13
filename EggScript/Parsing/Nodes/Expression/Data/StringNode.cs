@@ -15,7 +15,5 @@ public class StringNode(string value) : IDataNode
 
 	public static StringNode operator +(StringNode left, StringNode right) => new(left.Value + right.Value);
 
-	public override string ToString() => $"""
-StringNode ( Value: {Value} )
-""";
+	public override string ToString() => $"""StringNode ({Value})""";
 }

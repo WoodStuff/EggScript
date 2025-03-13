@@ -18,12 +18,17 @@ public class OperatorNode(IExpressionNode left, string op, IExpressionNode right
 	/// </summary>
 	public IExpressionNode Right { get; } = right;
 
-	public override string ToString() => $"""
+	public override string ToString()
+	{
+		string left = Left.ToString()!.Replace("\n", "\n    ");
+		string right = Right.ToString()!.Replace("\n", "\n    ");
+		return $"""
 OperatorNode
 (
-Operator: {Operator}
-Left: {Left}
-Right: {Right}
+    Operator: {Operator}
+    Left: {left}
+    Right: {right}
 )
 """;
+	}
 }
