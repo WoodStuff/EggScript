@@ -11,6 +11,8 @@ namespace EggScript.Runtime;
 /// </summary>
 internal static class Interpreter
 {
+	private static Dictionary<string, IDataNode> Variables { get; } = [];
+
 	/// <summary>
 	/// Runs an EggScript program based on the abstract syntax tree generated from the <see cref="Parser"/>.
 	/// </summary>
@@ -24,6 +26,10 @@ internal static class Interpreter
 			{
 				case PrintNode printNode:
 					Console.WriteLine(GetValue(printNode.Data).Value);
+					break;
+
+				case VarDeclarationNode varDeclarationNode:
+					AddVariable(varDeclarationNode.Name, GetValue(varDeclarationNode.Data));
 					break;
 
 				default:
@@ -42,6 +48,7 @@ internal static class Interpreter
 	{
 		return node switch
 		{
+			VariableNode variableNode => GetVariable(variableNode.Value),
 			IDataNode dataNode => dataNode,
 			OperatorNode operatorNode => ParseOperator(operatorNode),
 			UnaryOpNode unaryOpNode => ParseOperator(unaryOpNode),
@@ -162,5 +169,16 @@ internal static class Interpreter
 			},
 			_ => throw new EggRuntimeException("Invalid operator"),
 		};
+	}
+
+	private static void AddVariable(string name, IDataNode data)
+	{
+		if (!Variables.TryAdd(name, data)) throw new EggRuntimeException($"Variable {name} was already declared");
+	}
+
+	private static IDataNode GetVariable(string name)
+	{
+		if (!Variables.TryGetValue(name, out IDataNode? var)) throw new EggRuntimeException($"Variable {name} was not found");
+		return var;
 	}
 }

@@ -20,6 +20,7 @@ internal static partial class Tokenizer
 		{ TokenType.Operator, OperatorRegex() },
 		{ TokenType.Number, NumberRegex() },
 		{ TokenType.String, StringRegex() },
+		{ TokenType.Identifier, IdentifierRegex() },
 	};
 
 	/// <summary>
@@ -64,7 +65,7 @@ internal static partial class Tokenizer
 	/// <returns>If the token type should be added to the final token list.</returns>
 	private static bool IsCounted(TokenType type) => type != TokenType.Whitespace && type != TokenType.Comment;
 
-	[GeneratedRegex(@"^print\b")]
+	[GeneratedRegex(@"^(print|var)\b")]
 	private static partial Regex KeywordRegex();
 	[GeneratedRegex(@"^(true|false)\b")]
 	private static partial Regex FreeKeywordRegex();
@@ -74,10 +75,12 @@ internal static partial class Tokenizer
 	private static partial Regex CommentRegex();
 	[GeneratedRegex(@"^[\(\);]")]
 	private static partial Regex PunctuationRegex();
-	[GeneratedRegex(@"^(\+|\-|\*|/|==|!=|!|&|\||>=|<=|>|<)")]
+	[GeneratedRegex(@"^(\+|\-|\*|/|==|!=|!|&|\||>=|<=|>|<|=)")]
 	private static partial Regex OperatorRegex();
 	[GeneratedRegex(@"^\d*\.?\d+")]
 	private static partial Regex NumberRegex();
 	[GeneratedRegex(@"^""[^""]*""")]
 	private static partial Regex StringRegex();
+	[GeneratedRegex(@"^\w+")]
+	private static partial Regex IdentifierRegex();
 }

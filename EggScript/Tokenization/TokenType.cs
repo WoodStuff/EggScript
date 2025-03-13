@@ -40,6 +40,10 @@ internal enum TokenType
 	/// </summary>
 	String,
 	/// <summary>
+	/// A variable identifier, like thing. These are just words without any other meaning.
+	/// </summary>
+	Identifier,
+	/// <summary>
 	/// The end of the source code. Always has a value of empty string.
 	/// </summary>
 	EOF,

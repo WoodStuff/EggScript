@@ -58,13 +58,37 @@ internal class Parser(List<Token> tokens)
 	/// <exception cref="EggSyntaxException">Thrown when a syntax error is detected.</exception>
 	public IStatementNode ParseStatement()
 	{
-		if (!Match(TokenType.Keyword, "print")) throw new EggSyntaxException("Statement must start from a keyword");
-		if (!Match(TokenType.Punctuation, "(")) throw new EggSyntaxException("( expected");
+		IStatementNode node;
+		if (!Match(TokenType.Keyword, out string keyword)) throw new EggSyntaxException("Statement must start from a keyword");
 
-		IExpressionNode data = ParseExpression();
-		PrintNode node = new(data);
+		switch (keyword)
+		{
+			case "print":
+			{
+				if (!Match(TokenType.Punctuation, "(")) throw new EggSyntaxException("( expected");
 
-		if (!Match(TokenType.Punctuation, ")")) throw new EggSyntaxException(") expected");
+				IExpressionNode data = ParseExpression();
+				node = new PrintNode(data);
+
+				if (!Match(TokenType.Punctuation, ")")) throw new EggSyntaxException(") expected");
+				break;
+			}
+
+			case "var":
+			{
+				if (!Match(TokenType.Identifier, out string name)) throw new EggSyntaxException("Identifier expected");
+				if (!Match(TokenType.Operator, "=")) throw new EggSyntaxException("= expected");
+
+				IExpressionNode data = ParseExpression();
+				node = new VarDeclarationNode(name, data);
+
+				break;
+			}
+
+			default:
+				throw new EggSyntaxException("Invalid keyword");
+		}
+
 		if (!Match(TokenType.Punctuation, ";")) throw new EggSyntaxException("; expected");
 
 		return node;
@@ -136,6 +160,7 @@ internal class Parser(List<Token> tokens)
 			TokenType.String => new StringNode(token.Value),
 			TokenType.Number => new NumberNode(token.Value),
 			TokenType.FreeKeyword => booleans.Contains(token.Value) ? new BooleanNode(token.Value) : throw new EggSyntaxException("Expression expected"),
+			TokenType.Identifier => new VariableNode(token.Value),
 			_ => throw new EggSyntaxException("Expression expected"),
 		};
 		return node;
