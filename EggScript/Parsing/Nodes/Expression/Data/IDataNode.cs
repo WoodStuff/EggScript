@@ -9,4 +9,8 @@ public interface IDataNode : IExpressionNode
 	/// The value of the <see cref="IDataNode"/>.
 	/// </summary>
 	object Value { get; }
+	/// <summary>
+	/// The data type of the <see cref="IDataNode"/>.
+	/// </summary>
+	DataType Type { get; }
 }

@@ -11,6 +11,7 @@ public class BooleanNode : IDataNode
 	public bool Value { get; }
 
 	object IDataNode.Value => Value;
+	DataType IDataNode.Type => DataType.Boolean;
 
 	public BooleanNode(bool value) => Value = value;
 	public BooleanNode(string value) => Value = bool.Parse(value);

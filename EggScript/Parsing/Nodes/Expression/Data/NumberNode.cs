@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace EggScript.Parsing.Nodes.Expression.Data;
+﻿namespace EggScript.Parsing.Nodes.Expression.Data;
 
 /// <summary>
 /// Represents a data node that holds a number.
@@ -13,6 +11,7 @@ public class NumberNode : IDataNode
 	public double Value { get; }
 
 	object IDataNode.Value => Value;
+	DataType IDataNode.Type => DataType.Number;
 
 	public NumberNode(double value) => Value = value;
 	public NumberNode(string value) => Value = double.Parse(value);

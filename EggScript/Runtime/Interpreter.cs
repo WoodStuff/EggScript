@@ -14,7 +14,7 @@ internal static class Interpreter
 	/// <summary>
 	/// The declared variables and their values.
 	/// </summary>
-	private static Dictionary<string, IDataNode> Variables { get; } = [];
+	private static Dictionary<string, Variable> Variables { get; } = [];
 
 	/// <summary>
 	/// Runs an EggScript program based on the abstract syntax tree generated from the <see cref="Parser"/>.
@@ -185,19 +185,21 @@ internal static class Interpreter
 
 	private static void AddVariable(string name, IDataNode data)
 	{
-		if (!Variables.TryAdd(name, data)) throw new EggRuntimeException($"Variable {name} was already declared");
+		Variable var = new(data);
+		if (!Variables.TryAdd(name, var)) throw new EggRuntimeException($"Variable {name} was already declared");
 	}
 
 	private static IDataNode GetVariable(string name)
 	{
-		if (!Variables.TryGetValue(name, out IDataNode? var)) throw new EggRuntimeException($"Variable {name} was not found");
-		return var;
+		if (!Variables.TryGetValue(name, out Variable? var)) throw new EggRuntimeException($"Variable {name} was not found");
+		return var.Data;
 	}
 	
 	private static IDataNode ModifyVariable(string name, IDataNode data)
 	{
-		if (!Variables.ContainsKey(name)) throw new EggRuntimeException($"Variable {name} was not found");
-		Variables[name] = data;
+		if (!Variables.TryGetValue(name, out Variable? value)) throw new EggRuntimeException($"Variable {name} was not found");
+		if (value.Type != data.Type) throw new EggRuntimeException($"Cannot change variable {name}'s type");
+		Variables[name].Data = data;
 		return data;
 	}
 }
