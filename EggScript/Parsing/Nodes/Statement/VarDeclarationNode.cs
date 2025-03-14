@@ -7,7 +7,8 @@ namespace EggScript.Parsing.Nodes.Statement;
 /// </summary>
 /// <param name="name">The name of the variable.</param>
 /// <param name="data">The value to assign to the variable.</param>
-public class VarDeclarationNode(string name, IExpressionNode data) : IStatementNode
+/// <param name="constant">If a variable is constant, its value cannot be reassigned.</param>
+public class VarDeclarationNode(string name, IExpressionNode data, bool constant = false) : IStatementNode
 {
 	/// <summary>
 	/// The name of the variable.
@@ -17,6 +18,10 @@ public class VarDeclarationNode(string name, IExpressionNode data) : IStatementN
 	/// The value to assign to the variable.
 	/// </summary>
 	public IExpressionNode Data { get; } = data;
+	/// <summary>
+	/// If a variable is constant, its value cannot be reassigned.
+	/// </summary>
+	public bool Constant { get; } = constant;
 
 	public override string ToString()
 	{
@@ -26,6 +31,7 @@ VarDeclarationNode
 (
     Name: {Name}
     Data: {data}
+    Constant: {Constant}
 )
 """;
 	}

@@ -96,12 +96,13 @@ internal class Parser(List<Token> tokens)
 			}
 
 			case "var":
+			case "const":
 			{
 				if (!Match(TokenType.Identifier, out string name)) throw new EggSyntaxException("Identifier expected");
 				if (!Match(TokenType.Operator, "=")) throw new EggSyntaxException("= expected");
 
 				IExpressionNode data = ParseExpression();
-				node = new VarDeclarationNode(name, data);
+				node = new VarDeclarationNode(name, data, keyword == "const");
 
 				break;
 			}

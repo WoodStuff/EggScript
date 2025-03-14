@@ -31,12 +31,12 @@ internal static class Interpreter
 					Console.WriteLine(GetValue(printNode.Data).Value);
 					break;
 
-				case VarDeclarationNode varDeclarationNode:
-					AddVariable(varDeclarationNode.Name, GetValue(varDeclarationNode.Data));
+				case VarDeclarationNode varDecNode:
+					AddVariable(varDecNode.Name, GetValue(varDecNode.Data), varDecNode.Constant);
 					break;
 
-				case VarAssignmentNode varAssignmentNode:
-					ModifyVariable(varAssignmentNode.Name, GetValue(varAssignmentNode.Data));
+				case VarAssignmentNode varAssNode:
+					ModifyVariable(varAssNode.Name, GetValue(varAssNode.Data));
 					break;
 
 				default:
@@ -55,8 +55,8 @@ internal static class Interpreter
 	{
 		return node switch
 		{
-			VariableNode variableNode => GetVariable(variableNode.Name),
 			IDataNode dataNode => dataNode,
+			VariableNode variableNode => GetVariable(variableNode.Name),
 			OperatorNode operatorNode => ParseOperator(operatorNode),
 			UnaryOpNode unaryOpNode => ParseOperator(unaryOpNode),
 			_ => throw new EggRuntimeException($"Tried to get value of an invalid node: {node.GetType().Name}"),
@@ -183,9 +183,9 @@ internal static class Interpreter
 		};
 	}
 
-	private static void AddVariable(string name, IDataNode data)
+	private static void AddVariable(string name, IDataNode data, bool constant = false)
 	{
-		Variable var = new(data);
+		Variable var = new(data, constant);
 		if (!Variables.TryAdd(name, var)) throw new EggRuntimeException($"Variable {name} was already declared");
 	}
 
@@ -198,7 +198,8 @@ internal static class Interpreter
 	private static IDataNode ModifyVariable(string name, IDataNode data)
 	{
 		if (!Variables.TryGetValue(name, out Variable? value)) throw new EggRuntimeException($"Variable {name} was not found");
-		if (value.Type != data.Type) throw new EggRuntimeException($"Cannot change variable {name}'s type");
+		if (value.Constant) throw new EggRuntimeException($"Cannot modify constant variable {name}");
+		if (value.Type != data.Type) throw new EggRuntimeException($"Cannot change variable {name}'s type (tried to change {value.Type} to {value.Type})");
 		Variables[name].Data = data;
 		return data;
 	}
