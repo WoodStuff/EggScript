@@ -38,7 +38,7 @@ public static class Eggscript
 		Parser parser = new(tokens);
 		List<IStatementNode> nodes = parser.Parse();
 
-		Interpreter.Run(nodes);
+		Interpreter.Execute(nodes);
 	}
 
 	/// <summary>
