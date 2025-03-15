@@ -29,7 +29,7 @@ internal static class Interpreter
 		}
 	}
 
-	private static void ExecuteStatement(IStatementNode node)
+	internal static void ExecuteStatement(IStatementNode node)
 	{
 		switch (node)
 		{
@@ -56,7 +56,7 @@ internal static class Interpreter
 	/// <param name="node">The expression node to evaluate.</param>
 	/// <returns>The value of the expression.</returns>
 	/// <exception cref="EggRuntimeException">Thrown when an invalid node is detected.</exception>
-	private static IDataNode GetValue(IExpressionNode node)
+	internal static IDataNode GetValue(IExpressionNode node)
 	{
 		return node switch
 		{
