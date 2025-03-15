@@ -145,7 +145,7 @@ internal class Parser(List<Token> _tokens)
 	/// </summary>
 	/// <param name="level">The operator precedence level to start at.</param>
 	/// <returns>The node corresponding to that expression.</returns>
-	private IExpressionNode ParseOperator(int level = 0, bool parentheses = false)
+	private IExpressionNode ParseOperator(int level = 0)
 	{
 		IExpressionNode data = GetLowerExpression(level);
 		while (Match(TokenType.Operator, out string op, operators[level]))
@@ -153,14 +153,12 @@ internal class Parser(List<Token> _tokens)
 			IExpressionNode right = GetLowerExpression(level);
 			data = new OperatorNode(data, op, right);
 		}
-		if (parentheses && level == 0) Match(TokenType.Punctuation, ")");
 		return data;
 
 		IExpressionNode GetLowerExpression(int level)
 		{
 			if (level == operators.Count - 1)
 			{
-				if (Match(TokenType.Punctuation, "(")) return ParseOperator(0, true);
 				return ParseUnary();
 			}
 			return ParseOperator(level + 1);
@@ -176,29 +174,43 @@ internal class Parser(List<Token> _tokens)
 		IExpressionNode node;
 		if (Match(TokenType.Operator, out string op, unaryOperators))
 		{
-			IExpressionNode value = Match(TokenType.Punctuation, "(") ? ParseOperator(0, true) : ParseUnary();
+			IExpressionNode value = ParseUnary();
 			node = new UnaryOpNode(op, value);
 			return node;
 		}
-		return ParsePrimitive();
+		return ParsePrimary();
 	}
 
 	/// <summary>
-	/// Parses some data, such as a string or number.
+	/// Parses some basic data, such as a string, number, identifier or a completely new expression through parentheses.
 	/// </summary>
-	/// <returns>The node corresponding to that primitive.</returns>
-	/// <exception cref="EggSyntaxException">Thrown when the data is not a primitive.</exception>
-	private IExpressionNode ParsePrimitive()
+	/// <returns>The node corresponding to that data.</returns>
+	/// <exception cref="EggSyntaxException">Thrown when an invalid expression is encountered.</exception>
+	private IExpressionNode ParsePrimary()
 	{
 		Token token = Next();
-		IExpressionNode node = token.Type switch
+
+		IExpressionNode node;
+		switch (token.Type)
 		{
-			TokenType.String => new StringNode(token.Value),
-			TokenType.Number => new NumberNode(token.Value),
-			TokenType.FreeKeyword => booleans.Contains(token.Value) ? new BooleanNode(token.Value) : throw new EggSyntaxException("Expression expected"),
-			TokenType.Identifier => new VariableNode(token.Value),
-			_ => throw new EggSyntaxException("Expression expected"),
-		};
+			case TokenType.String: node = new StringNode(token.Value); break;
+			case TokenType.Number: node = new NumberNode(token.Value); break;
+			case TokenType.Identifier: node = new VariableNode(token.Value); break;
+
+			case TokenType.FreeKeyword:
+				if (!booleans.Contains(token.Value)) throw new EggSyntaxException("Expression expected");
+				node = new BooleanNode(token.Value);
+				break;
+
+			case TokenType.Punctuation:
+				if (token.Value != "(") throw new EggSyntaxException("Expression expected");
+				node = ParseExpression();
+				if (!Match(TokenType.Punctuation, ")")) throw new EggSyntaxException(") expected");
+				break;
+
+			default:
+				throw new EggSyntaxException("Expression expected");
+		}
 		return node;
 	}
 
