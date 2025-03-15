@@ -3,7 +3,7 @@
 /// <summary>
 /// Thrown when an error is found at runtime (the interpreter fails).
 /// </summary>
-public class EggRuntimeException : Exception
+public class EggRuntimeException : EggScriptException
 {
 	public EggRuntimeException() { }
 	public EggRuntimeException(string message) : base(message) { }
