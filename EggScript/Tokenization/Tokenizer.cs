@@ -66,21 +66,21 @@ internal static partial class Tokenizer
 	private static bool IsCounted(TokenType type) => type != TokenType.Whitespace && type != TokenType.Comment;
 
 	[GeneratedRegex(@"^(print|var|const)\b")]
-	private static partial Regex KeywordRegex();
+	internal static partial Regex KeywordRegex();
 	[GeneratedRegex(@"^(true|false)\b")]
-	private static partial Regex FreeKeywordRegex();
+	internal static partial Regex FreeKeywordRegex();
 	[GeneratedRegex(@"^\s+")]
-	private static partial Regex WhitespaceRegex();
+	internal static partial Regex WhitespaceRegex();
 	[GeneratedRegex(@"^//.*|^/\*[\s\S]*?\*/")]
-	private static partial Regex CommentRegex();
+	internal static partial Regex CommentRegex();
 	[GeneratedRegex(@"^[\(\);]")]
-	private static partial Regex PunctuationRegex();
+	internal static partial Regex PunctuationRegex();
 	[GeneratedRegex(@"^(\+|\-|\*|/|==|!=|!|&|\||>=|<=|>|<|=)")]
-	private static partial Regex OperatorRegex();
+	internal static partial Regex OperatorRegex();
 	[GeneratedRegex(@"^\d*\.?\d+")]
-	private static partial Regex NumberRegex();
+	internal static partial Regex NumberRegex();
 	[GeneratedRegex(@"^""[^""]*""")]
-	private static partial Regex StringRegex();
+	internal static partial Regex StringRegex();
 	[GeneratedRegex(@"^\w+")]
-	private static partial Regex IdentifierRegex();
+	internal static partial Regex IdentifierRegex();
 }
