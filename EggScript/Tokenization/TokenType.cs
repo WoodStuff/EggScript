@@ -44,7 +44,7 @@ internal enum TokenType
 	/// </summary>
 	Identifier,
 	/// <summary>
-	/// The end of the source code. Always has a value of empty string.
+	/// The end of the source code. Always has a value of "end of file".
 	/// </summary>
 	EOF,
 }

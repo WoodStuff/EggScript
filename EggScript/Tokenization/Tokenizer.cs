@@ -53,7 +53,7 @@ internal static partial class Tokenizer
 			if (!found) throw new EggInvalidTokenException($"Unexpected character found", offset, source[offset]);
 		}
 
-		tokens.Add(new Token(TokenType.EOF, ""));
+		tokens.Add(new Token(TokenType.EOF, "end of file"));
 		
 		return tokens;
 	}

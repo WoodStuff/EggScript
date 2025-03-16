@@ -229,7 +229,7 @@ internal static class Interpreter
 	{
 		if (!Variables.TryGetValue(name, out Variable? value)) throw new EggRuntimeException($"Variable {name} was not found");
 		if (value.Constant) throw new EggRuntimeException($"Cannot modify constant variable {name}");
-		if (value.Type != data.Type) throw new EggRuntimeException($"Cannot change variable {name}'s type (tried to change {value.Type} to {value.Type})");
+		if (value.Type != data.Type) throw new EggRuntimeException($"Cannot change variable {name}'s type (tried to change {value.Type} to {data.Type})");
 		Variables[name].Data = data;
 		return data;
 	}

@@ -1,4 +1,6 @@
-﻿using EggScript.Exceptions;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using EggScript.Exceptions;
 using EggScript.Parsing.Nodes.Expression;
 using EggScript.Parsing.Nodes.Expression.Data;
 using EggScript.Parsing.Nodes.Statement;
@@ -198,18 +200,19 @@ internal class Parser(List<Token> _tokens)
 			case TokenType.Identifier: node = new VariableNode(token.Value); break;
 
 			case TokenType.FreeKeyword:
-				if (!booleans.Contains(token.Value)) throw new EggSyntaxException("Expression expected");
+				if (!booleans.Contains(token.Value)) Throw_ExpressionExpected(token.Value);
 				node = new BooleanNode(token.Value);
 				break;
 
 			case TokenType.Punctuation:
-				if (token.Value != "(") throw new EggSyntaxException("Expression expected");
+				if (token.Value != "(") Throw_ExpressionExpected(token.Value);
 				node = ParseExpression();
-				if (!Match(TokenType.Punctuation, ")")) throw new EggSyntaxException(") expected");
+				if (!Match(TokenType.Punctuation, ")")) Throw_ExpressionExpected(Next().Value, ")");
 				break;
 
 			default:
-				throw new EggSyntaxException("Expression expected");
+				Throw_ExpressionExpected(token.Value);
+				throw new Exception();
 		}
 		return node;
 	}
@@ -301,4 +304,8 @@ internal class Parser(List<Token> _tokens)
 
 		return node;
 	}
+
+	[DoesNotReturn]
+	[StackTraceHidden]
+	private static void Throw_ExpressionExpected(string actual, string expected = "Expression") => throw new EggSyntaxException($"{expected} expected - got {actual}");
 }
