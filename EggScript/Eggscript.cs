@@ -74,5 +74,8 @@ public static class Eggscript
 		Console.WriteLine(string.Join('\n', nodes));
 	}
 
+	/// <summary>
+	/// Runs tests.egg.
+	/// </summary>
 	internal static void Test() => Execute(TestsPath);
 }

@@ -272,6 +272,11 @@ internal class Parser(List<Token> _tokens)
 		return token;
 	}
 
+	/// <summary>
+	/// Parses a statement.
+	/// </summary>
+	/// <param name="source">The code of the statement.</param>
+	/// <returns>The statement node.</returns>
 	internal static IStatementNode ParseStatement(string source)
 	{
 		List<Token> tokens = Tokenizer.Tokenize(source);
@@ -282,6 +287,11 @@ internal class Parser(List<Token> _tokens)
 		return node;
 	}
 
+	/// <summary>
+	/// Parses an expression.
+	/// </summary>
+	/// <param name="source">The code of the expression.</param>
+	/// <returns>The expression node.</returns>
 	internal static IExpressionNode ParseExpression(string source)
 	{
 		List<Token> tokens = Tokenizer.Tokenize(source);
