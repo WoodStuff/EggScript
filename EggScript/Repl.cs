@@ -121,6 +121,10 @@ public static class Repl
 		Console.ForegroundColor = temp;
 	}
 
+	/// <summary>
+	/// Sets the last arrow's color.
+	/// </summary>
+	/// <param name="success">If the last line succeeded.</param>
 	private static void SetArrowColor(bool success)
 	{
 		(int x, int y) = Console.GetCursorPosition();
