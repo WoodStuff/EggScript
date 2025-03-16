@@ -12,6 +12,8 @@ namespace EggScript;
 /// </summary>
 public static class Repl
 {
+	private static (int x, int y) ArrowPos { get; set; } = (0, 0);
+
 	/// <summary>
 	/// Starts the Repl in a console window.
 	/// </summary>
@@ -22,9 +24,15 @@ public static class Repl
 		string input;
 		do
 		{
+			ArrowPos = Console.GetCursorPosition();
+
 			Write("> ", ConsoleColor.DarkGray);
 			input = Console.ReadLine()!;
-			if (input != "exit") EvaluateLine(input);
+
+			if (input == "exit") break;
+
+			bool success = EvaluateLine(input);
+			SetArrowColor(success);
 		} while (input != "exit");
 	}
 
@@ -32,27 +40,31 @@ public static class Repl
 	/// Evaluates an EggScript line of code.
 	/// </summary>
 	/// <param name="input">The code.</param>
-	private static void EvaluateLine(string input)
+	/// <returns>If the evaluation succeeded.</returns>
+	private static bool EvaluateLine(string input)
 	{
 		bool statement = IsStatement(input);
-		if (statement) EvaluateStatement(input);
-		else EvaluateExpression(input);
+		if (statement) return EvaluateStatement(input);
+		else return EvaluateExpression(input);
 	}
 
 	/// <summary>
 	/// Evaluates an EggScript expression.
 	/// </summary>
 	/// <param name="input">The code.</param>
-	private static void EvaluateExpression(string input)
+	/// <returns>If the evaluation succeeded.</returns>
+	private static bool EvaluateExpression(string input)
 	{
 		try
 		{
 			IExpressionNode node = Parser.ParseExpression(input);
 			Console.WriteLine(Interpreter.GetValue(node).Value);
+			return true;
 		}
 		catch (EggScriptException e)
 		{
 			WriteLine(e.Message, ConsoleColor.Red);
+			return false;
 		}
 	}
 
@@ -60,16 +72,19 @@ public static class Repl
 	/// Evaluates an EggScript statement.
 	/// </summary>
 	/// <param name="input">The code.</param>
-	private static void EvaluateStatement(string input)
+	/// <returns>If the evaluation succeeded.</returns>
+	private static bool EvaluateStatement(string input)
 	{
 		try
 		{
 			IStatementNode node = Parser.ParseStatement(input);
 			Interpreter.ExecuteStatement(node);
+			return true;
 		}
 		catch (EggScriptException e)
 		{
 			WriteLine(e.Message, ConsoleColor.Red);
+			return false;
 		}
 	}
 
@@ -104,5 +119,16 @@ public static class Repl
 		Console.ForegroundColor = color;
 		Console.WriteLine(value);
 		Console.ForegroundColor = temp;
+	}
+
+	private static void SetArrowColor(bool success)
+	{
+		(int x, int y) = Console.GetCursorPosition();
+		ConsoleColor color = success ? ConsoleColor.Green : ConsoleColor.Red;
+
+		Console.SetCursorPosition(ArrowPos.x, ArrowPos.y);
+		Write(">", color);
+
+		Console.SetCursorPosition(x, y);
 	}
 }
