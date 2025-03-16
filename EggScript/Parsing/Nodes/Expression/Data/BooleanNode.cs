@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a data node that holds a boolean.
 /// </summary>
-public class BooleanNode : IDataNode
+internal class BooleanNode : IDataNode
 {
 	/// <summary>
 	/// The value of the boolean node.

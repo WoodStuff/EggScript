@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a unary operator node.
 /// </summary>
-public class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
+internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 {
 	/// <summary>
 	/// The kind of operator, like negation.

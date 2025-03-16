@@ -8,7 +8,7 @@ namespace EggScript.Parsing.Nodes.Statement;
 /// <param name="name">The name of the variable.</param>
 /// <param name="data">The value to assign to the variable.</param>
 /// <param name="constant">If a variable is constant, its value cannot be reassigned.</param>
-public class VarDeclarationNode(string name, IExpressionNode data, bool constant = false) : IStatementNode
+internal class VarDeclarationNode(string name, IExpressionNode data, bool constant = false) : IStatementNode
 {
 	/// <summary>
 	/// The name of the variable.

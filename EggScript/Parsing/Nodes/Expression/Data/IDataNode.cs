@@ -3,7 +3,7 @@
 /// <summary>
 /// A node that represents data, like strings or numbers.
 /// </summary>
-public interface IDataNode : IExpressionNode
+internal interface IDataNode : IExpressionNode
 {
 	/// <summary>
 	/// The value of the <see cref="IDataNode"/>.

@@ -4,7 +4,7 @@
 /// Represents a data node that holds a string.
 /// </summary>
 /// <param name="value">The value of the string node.</param>
-public class StringNode(string value) : IDataNode
+internal class StringNode(string value) : IDataNode
 {
 	/// <summary>
 	/// The value of the string node.

@@ -3,7 +3,7 @@
 /// <summary>
 /// Variable data types.
 /// </summary>
-public enum DataType
+internal enum DataType
 {
 	String,
 	Number,

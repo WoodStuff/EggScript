@@ -6,7 +6,7 @@ namespace EggScript.Parsing.Nodes.Statement;
 /// A node that logs something.
 /// </summary>
 /// <param name="data">The value to log.</param>
-public class PrintNode(IExpressionNode data) : IStatementNode
+internal class PrintNode(IExpressionNode data) : IStatementNode
 {
 	/// <summary>
 	/// The value to log.

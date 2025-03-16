@@ -7,7 +7,7 @@ namespace EggScript.Parsing.Nodes.Statement;
 /// </summary>
 /// <param name="name">The name of the variable.</param>
 /// <param name="data">The value to assign to the variable.</param>
-public class VarAssignmentNode(string name, IExpressionNode data) : IStatementNode
+internal class VarAssignmentNode(string name, IExpressionNode data) : IStatementNode
 {
 	/// <summary>
 	/// The name of the variable.

@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a binary operator node.
 /// </summary>
-public class OperatorNode(IExpressionNode left, string op, IExpressionNode right) : IExpressionNode
+internal class OperatorNode(IExpressionNode left, string op, IExpressionNode right) : IExpressionNode
 {
 	/// <summary>
 	/// The kind of operator, like addition or multiplication.

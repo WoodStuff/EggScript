@@ -3,6 +3,6 @@
 /// <summary>
 /// A statement node, which executes instructions, control flow etc.
 /// </summary>
-public interface IStatementNode : INode
+internal interface IStatementNode : INode
 {
 }

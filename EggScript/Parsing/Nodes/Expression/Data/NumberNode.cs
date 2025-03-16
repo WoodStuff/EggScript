@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a data node that holds a number.
 /// </summary>
-public class NumberNode : IDataNode
+internal class NumberNode : IDataNode
 {
 	/// <summary>
 	/// The value of the number node.
