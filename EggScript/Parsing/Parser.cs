@@ -102,10 +102,16 @@ internal class Parser(List<Token> _tokens)
 			case "bool":
 			{
 				if (!Match(TokenType.Identifier, out string name)) throw new EggSyntaxException("Identifier expected");
-				if (!Match(TokenType.Operator, "=")) throw new EggSyntaxException("= expected");
+
+				DataType type = TypeFromString(keyword);
+
+				if (!Match(TokenType.Operator, "=")) // undeclared variable
+				{
+					node = new VarDeclarationNode(name, type);
+					break;
+				}
 
 				IExpressionNode data = ParseExpression();
-				DataType type = TypeFromString(keyword);
 				node = new VarDeclarationNode(name, type, data);
 				break;
 			}

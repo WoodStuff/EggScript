@@ -11,6 +11,8 @@ namespace EggScript.Runtime;
 /// </summary>
 internal static class Interpreter
 {
+	private static string[] operators_dontparseleft = ["="];
+
 	/// <summary>
 	/// The declared variables and their values.
 	/// </summary>
@@ -44,7 +46,7 @@ internal static class Interpreter
 
 			case VarDeclarationNode varDecNode:
 				AddVariable(varDecNode.Name, varDecNode.Type, varDecNode.Constant);
-				ModifyVariable(varDecNode.Name, GetValue(varDecNode.Data));
+				if (varDecNode.Initialized) ModifyVariable(varDecNode.Name, GetValue(varDecNode.Data));
 				break;
 
 			case VarAssignmentNode varAssNode:
@@ -83,7 +85,7 @@ internal static class Interpreter
 	private static IDataNode ParseOperator(OperatorNode node)
 	{
 		string op = node.Operator;
-		IDataNode left = GetValue(node.Left);
+		IDataNode? left = operators_dontparseleft.Contains(op) ? null : GetValue(node.Left);
 		IDataNode right = GetValue(node.Right);
 
 		return op switch

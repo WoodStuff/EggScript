@@ -10,7 +10,7 @@ namespace EggScript.Parsing.Nodes.Statement;
 /// <param name="type">The variable's type. This cannot be changed later.</param>
 /// <param name="data">The value to assign to the variable.</param>
 /// <param name="constant">If a variable is constant, its value cannot be reassigned.</param>
-internal class VarDeclarationNode(string name, DataType type, IExpressionNode data, bool constant = false) : IStatementNode
+internal class VarDeclarationNode(string name, DataType type, IExpressionNode? data = null, bool constant = false) : IStatementNode
 {
 	/// <summary>
 	/// The name of the variable.
@@ -23,7 +23,7 @@ internal class VarDeclarationNode(string name, DataType type, IExpressionNode da
 	/// <summary>
 	/// The value to assign to the variable.
 	/// </summary>
-	public IExpressionNode Data { get; } = data;
+	public IExpressionNode? Data { get; } = data;
 	/// <summary>
 	/// If a variable is constant, its value cannot be reassigned.
 	/// </summary>
@@ -37,11 +37,11 @@ internal class VarDeclarationNode(string name, DataType type, IExpressionNode da
 
 	public override string ToString()
 	{
-		string data = Data.ToString()!.Replace("\n", "\n    ");
+		string data = Initialized ? Data.ToString()!.Replace("\n", "\n    ") : "";
 		string declarationInfo = Initialized ? $"""
     Data: {data}
     Constant: {Constant}
-""" : "Uninitialized";
+""" : "    Uninitialized";
 		return $"""
 VarDeclarationNode
 (

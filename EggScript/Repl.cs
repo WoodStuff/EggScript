@@ -78,7 +78,8 @@ public static class Repl
 		try
 		{
 			IStatementNode node = Parser.ParseStatement(input);
-			Interpreter.ExecuteStatement(node);
+			Console.WriteLine(node);
+			//Interpreter.ExecuteStatement(node);
 			return true;
 		}
 		catch (EggScriptException e)
