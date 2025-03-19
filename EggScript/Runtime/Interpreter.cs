@@ -43,7 +43,8 @@ internal static class Interpreter
 				break;
 
 			case VarDeclarationNode varDecNode:
-				AddVariable(varDecNode.Name, GetValue(varDecNode.Data), varDecNode.Constant);
+				AddVariable(varDecNode.Name, varDecNode.Type, varDecNode.Constant);
+				ModifyVariable(varDecNode.Name, GetValue(varDecNode.Data));
 				break;
 
 			case VarAssignmentNode varAssNode:
@@ -200,9 +201,10 @@ internal static class Interpreter
 	/// <param name="data">The variable's value.</param>
 	/// <param name="constant">If the variable is a constant.</param>
 	/// <exception cref="EggRuntimeException">Thrown when the variable has already been declared.</exception>
-	private static void AddVariable(string name, IDataNode data, bool constant = false)
+	private static void AddVariable(string name, DataType type, bool constant = false)
 	{
-		Variable var = new(data, constant);
+		//if (data.Type != type) throw new EggRuntimeException($"Cannot assign a {data.Type} value to variable {name} of type {type}");
+		Variable var = new(type, constant);
 		if (!Variables.TryAdd(name, var)) throw new EggRuntimeException($"Variable {name} was already declared");
 	}
 
@@ -215,6 +217,7 @@ internal static class Interpreter
 	private static IDataNode GetVariable(string name)
 	{
 		if (!Variables.TryGetValue(name, out Variable? var)) throw new EggRuntimeException($"Variable {name} was not found");
+		if (!var.Initialized) throw new EggRuntimeException($"Variable {name} is uninitialized");
 		return var.Data;
 	}
 	

@@ -97,9 +97,22 @@ internal class Parser(List<Token> _tokens)
 				break;
 			}
 
-			case "var":
-			case "const":
+			case "string":
+			case "num":
+			case "bool":
 			{
+				if (!Match(TokenType.Identifier, out string name)) throw new EggSyntaxException("Identifier expected");
+				if (!Match(TokenType.Operator, "=")) throw new EggSyntaxException("= expected");
+
+				IExpressionNode data = ParseExpression();
+				DataType type = TypeFromString(keyword);
+				node = new VarDeclarationNode(name, type, data);
+				break;
+			}
+
+			/*case "const":
+			{
+				throw new NotImplementedException();
 				if (!Match(TokenType.Identifier, out string name)) throw new EggSyntaxException("Identifier expected");
 				if (!Match(TokenType.Operator, "=")) throw new EggSyntaxException("= expected");
 
@@ -107,7 +120,7 @@ internal class Parser(List<Token> _tokens)
 				node = new VarDeclarationNode(name, data, keyword == "const");
 
 				break;
-			}
+			}*/
 
 			default:
 				throw new EggSyntaxException("Invalid keyword");
@@ -304,6 +317,14 @@ internal class Parser(List<Token> _tokens)
 
 		return node;
 	}
+
+	private static DataType TypeFromString(string text) => text switch
+	{
+		"string" => DataType.String,
+		"num" => DataType.Number,
+		"bool" => DataType.Boolean,
+		_ => throw new EggSyntaxException($"Invalid type {text}"),
+	};
 
 	[DoesNotReturn]
 	[StackTraceHidden]
