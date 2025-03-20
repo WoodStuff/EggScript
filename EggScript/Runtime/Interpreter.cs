@@ -46,7 +46,7 @@ internal static class Interpreter
 
 			case VarDeclarationNode varDecNode:
 				AddVariable(varDecNode.Name, varDecNode.Type, varDecNode.Constant);
-				if (varDecNode.Initialized) ModifyVariable(varDecNode.Name, GetValue(varDecNode.Data));
+				if (varDecNode.Initialized) ModifyVariable(varDecNode.Name, GetValue(varDecNode.Data), true);
 				break;
 
 			case VarAssignmentNode varAssNode:
@@ -205,7 +205,6 @@ internal static class Interpreter
 	/// <exception cref="EggRuntimeException">Thrown when the variable has already been declared.</exception>
 	private static void AddVariable(string name, DataType type, bool constant = false)
 	{
-		//if (data.Type != type) throw new EggRuntimeException($"Cannot assign a {data.Type} value to variable {name} of type {type}");
 		Variable var = new(type, constant);
 		if (!Variables.TryAdd(name, var)) throw new EggRuntimeException($"Variable {name} was already declared");
 	}
@@ -222,18 +221,19 @@ internal static class Interpreter
 		if (!var.Initialized) throw new EggRuntimeException($"Variable {name} is uninitialized");
 		return var.Data;
 	}
-	
+
 	/// <summary>
 	/// Assigns a value to a declared variable.
 	/// </summary>
 	/// <param name="name">The name of the variable.</param>
 	/// <param name="data">The value to set the variable to.</param>
+	/// <param name="init">If this is a variable initialization (num n = 2) as opposed to an assignment (n = 2).</param>
 	/// <returns><paramref name="data"/></returns>
 	/// <exception cref="EggRuntimeException">Thrown when the variable has not been declared yet, is a constant variable, or an attempt to change the variable's data type was detected.</exception>
-	private static IDataNode ModifyVariable(string name, IDataNode data)
+	private static IDataNode ModifyVariable(string name, IDataNode data, bool init = false)
 	{
 		if (!Variables.TryGetValue(name, out Variable? value)) throw new EggRuntimeException($"Variable {name} was not found");
-		if (value.Constant) throw new EggRuntimeException($"Cannot modify constant variable {name}");
+		if (!init && value.Constant) throw new EggRuntimeException($"Cannot modify constant variable {name}");
 		if (value.Type != data.Type) throw new EggRuntimeException($"Cannot change variable {name}'s type (tried to change {value.Type} to {data.Type})");
 		Variables[name].Data = data;
 		return data;

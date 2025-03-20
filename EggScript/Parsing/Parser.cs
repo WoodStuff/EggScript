@@ -116,17 +116,19 @@ internal class Parser(List<Token> _tokens)
 				break;
 			}
 
-			/*case "const":
+			case "const":
 			{
-				throw new NotImplementedException();
-				if (!Match(TokenType.Identifier, out string name)) throw new EggSyntaxException("Identifier expected");
-				if (!Match(TokenType.Operator, "=")) throw new EggSyntaxException("= expected");
+				if (!Match(TokenType.Keyword, out string type)) throw new EggSyntaxException("Variable type expected");
 
-				IExpressionNode data = ParseExpression();
-				node = new VarDeclarationNode(name, data, keyword == "const");
+				node = ParseKeywordStatement(type);
+				if (node is not VarDeclarationNode decl) throw new EggSyntaxException("The const keyword can only be applied to variable declarations");
+				if (!decl.Initialized) throw new EggSyntaxException("Const variables must be initialized");
+
+				decl.Constant = true;
+				node = decl;
 
 				break;
-			}*/
+			}
 
 			default:
 				throw new EggSyntaxException("Invalid keyword");

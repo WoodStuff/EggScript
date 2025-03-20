@@ -20,7 +20,6 @@ internal class Variable(DataType type, bool constant = false)
 		set
 		{
 			if (value is null) throw new EggRuntimeException("Invalid value");
-			if (Constant) throw new EggRuntimeException("Cannot modify a constant variable");
 			if (value.Type != Type) throw new EggRuntimeException($"Cannot change a variable's type (tried to change {Type} to {value.Type})");
 			_data = value;
 		}

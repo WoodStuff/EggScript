@@ -27,7 +27,7 @@ internal class VarDeclarationNode(string name, DataType type, IExpressionNode? d
 	/// <summary>
 	/// If a variable is constant, its value cannot be reassigned.
 	/// </summary>
-	public bool Constant { get; } = constant;
+	public bool Constant { get; set; } = constant;
 
 	/// <summary>
 	/// If the variable is initialized. An uninitialized variable is defined like: string txt;
