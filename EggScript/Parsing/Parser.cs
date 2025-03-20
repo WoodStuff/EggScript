@@ -137,8 +137,7 @@ internal class Parser(List<Token> _tokens)
 				IExpressionNode condition = ParseExpression();
 				if (!Match(TokenType.Punctuation, ")")) Throw_Expected(Next().Value, ")");
 
-				List<IStatementNode> block = ParseBlock();
-
+				List<IStatementNode> block = Match(TokenType.Punctuation, "{") ? ParseBlock() : [ParseStatement()];
 				node = new IfNode(condition, block);
 
 				break;
@@ -251,10 +250,12 @@ internal class Parser(List<Token> _tokens)
 		return node;
 	}
 
+	/// <summary>
+	/// Parses a block statement, which is a list of statements enclosed by { }. Assumes the { was already matched.
+	/// </summary>
+	/// <returns>A list of statements in the block.</returns>
 	private List<IStatementNode> ParseBlock()
 	{
-		if (!Match(TokenType.Punctuation, "{")) Throw_Expected(Next().Value, "{");
-
 		List<IStatementNode> nodes = [];
 		while (!Match(TokenType.Punctuation, "}"))
 		{
