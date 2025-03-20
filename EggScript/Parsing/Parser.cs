@@ -70,7 +70,7 @@ internal class Parser(List<Token> _tokens)
 			node = ParseExprStatement(expr);
 		}
 
-		if (!Match(TokenType.Punctuation, ";")) throw new EggSyntaxException("; expected");
+		if (!Match(TokenType.Punctuation, ";")) Throw_Expected(Next().Value, ";");
 
 		return node;
 	}
@@ -88,12 +88,12 @@ internal class Parser(List<Token> _tokens)
 		{
 			case "print":
 			{
-				if (!Match(TokenType.Punctuation, "(")) throw new EggSyntaxException("( expected");
+				if (!Match(TokenType.Punctuation, "(")) Throw_Expected(Next().Value, "(");
 
 				IExpressionNode data = ParseExpression();
 				node = new PrintNode(data);
 
-				if (!Match(TokenType.Punctuation, ")")) throw new EggSyntaxException(") expected");
+				if (!Match(TokenType.Punctuation, ")")) Throw_Expected(Next().Value, ")");
 				break;
 			}
 
@@ -101,7 +101,7 @@ internal class Parser(List<Token> _tokens)
 			case "num":
 			case "bool":
 			{
-				if (!Match(TokenType.Identifier, out string name)) throw new EggSyntaxException("Identifier expected");
+				if (!Match(TokenType.Identifier, out string name)) Throw_Expected(Next().Value, "Identifier");
 
 				DataType type = TypeFromString(keyword);
 
@@ -118,11 +118,11 @@ internal class Parser(List<Token> _tokens)
 
 			case "const":
 			{
-				if (!Match(TokenType.Keyword, out string type)) throw new EggSyntaxException("Variable type expected");
+				if (!Match(TokenType.Keyword, out string type)) Throw_Expected(Next().Value, "Data type");
 
 				node = ParseKeywordStatement(type);
 				if (node is not VarDeclarationNode decl) throw new EggSyntaxException("The const keyword can only be applied to variable declarations");
-				if (!decl.Initialized) throw new EggSyntaxException("Const variables must be initialized");
+				if (!decl.Initialized) throw new EggSyntaxException($"Constant variable {decl.Name} must be initialized");
 
 				decl.Constant = true;
 				node = decl;
@@ -131,7 +131,7 @@ internal class Parser(List<Token> _tokens)
 			}
 
 			default:
-				throw new EggSyntaxException("Invalid keyword");
+				throw new EggSyntaxException($"Keyword {keyword} is not implemented");
 		}
 		return node;
 	}
@@ -208,7 +208,6 @@ internal class Parser(List<Token> _tokens)
 	/// Parses some basic data, such as a string, number, identifier or a completely new expression through parentheses.
 	/// </summary>
 	/// <returns>The node corresponding to that data.</returns>
-	/// <exception cref="EggSyntaxException">Thrown when an invalid expression is encountered.</exception>
 	private IExpressionNode ParsePrimary()
 	{
 		Token token = Next();
@@ -345,7 +344,7 @@ internal class Parser(List<Token> _tokens)
 	/// </summary>
 	/// <param name="actual">What was detected instead of the expected token.</param>
 	/// <param name="expected">What was expected. Defaults to "Expression".</param>
-	/// <exception cref="EggSyntaxException">Thrown always.</exception>
+	/// <exception cref="EggSyntaxException">Always thrown.</exception>
 	[DoesNotReturn]
 	[StackTraceHidden]
 	private static void Throw_Expected(string actual, string expected = "Expression") => throw new EggSyntaxException($"{expected} expected - got {actual}");
