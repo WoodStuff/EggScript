@@ -20,14 +20,14 @@ print("Hi!");
 print("I like EggScript");
 
 /* Variables */
-const a = 2;
-const b = 3;
-var c = (a + b) * 3;
+num a = 2;
+const num b = 3;
+const num c = (a + b) * 3;
 print(c); // 15
 
 /* This part looks different from the others
    but I don't know what to name it */
-c = c / 5;
-print(c); // 3
-print(c > 2 & c < 5); // True
+a = a * 5;
+print(a); // 10
+print(a > 8 & a < 13); // True
 ```
