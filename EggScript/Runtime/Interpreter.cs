@@ -11,7 +11,7 @@ namespace EggScript.Runtime;
 /// </summary>
 internal static class Interpreter
 {
-	private static string[] operators_dontparseleft = ["="];
+	private static readonly string[] operators_dontparseleft = ["="];
 
 	/// <summary>
 	/// The declared variables and their values.
