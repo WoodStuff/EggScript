@@ -53,6 +53,13 @@ internal static class Interpreter
 				ModifyVariable(varAssNode.Name, GetValue(varAssNode.Data));
 				break;
 
+			case IfNode ifNode:
+				IDataNode condition = GetValue(ifNode.Condition);
+				if (condition is not BooleanNode result) throw new EggRuntimeException("If statement condition is not a boolean");
+
+				if (result.Value) Execute(ifNode.Body);
+				break;
+
 			default:
 				throw new EggRuntimeException($"Invalid node: {node.GetType().Name}");
 		}

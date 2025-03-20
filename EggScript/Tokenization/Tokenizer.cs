@@ -65,7 +65,7 @@ internal static partial class Tokenizer
 	/// <returns>If the token type should be added to the final token list.</returns>
 	private static bool IsCounted(TokenType type) => type != TokenType.Whitespace && type != TokenType.Comment;
 
-	[GeneratedRegex(@"^(print|string|num|bool|const)\b")]
+	[GeneratedRegex(@"^(print|if|string|num|bool|const)\b")]
 	internal static partial Regex KeywordRegex();
 	[GeneratedRegex(@"^(true|false)\b")]
 	internal static partial Regex FreeKeywordRegex();
@@ -73,7 +73,7 @@ internal static partial class Tokenizer
 	internal static partial Regex WhitespaceRegex();
 	[GeneratedRegex(@"^//.*|^/\*[\s\S]*?\*/")]
 	internal static partial Regex CommentRegex();
-	[GeneratedRegex(@"^[\(\);]")]
+	[GeneratedRegex(@"^[\(\){};]")]
 	internal static partial Regex PunctuationRegex();
 	[GeneratedRegex(@"^(\+|\-|\*|/|==|!=|!|&|\||>=|<=|>|<|=)")]
 	internal static partial Regex OperatorRegex();
