@@ -43,7 +43,7 @@ internal class Parser(List<Token> _tokens)
 	/// <summary>
 	/// Parses the <see cref="Tokens"/> into an abstract syntax tree.
 	/// </summary>
-	/// <returns>A list of nodes make from the tokens.</returns>
+	/// <returns>A list of nodes made from the tokens.</returns>
 	public List<IStatementNode> Parse()
 	{
 		List<IStatementNode> nodes = [];
@@ -219,18 +219,18 @@ internal class Parser(List<Token> _tokens)
 			case TokenType.Identifier: node = new VariableNode(token.Value); break;
 
 			case TokenType.FreeKeyword:
-				if (!booleans.Contains(token.Value)) Throw_ExpressionExpected(token.Value);
+				if (!booleans.Contains(token.Value)) Throw_Expected(token.Value);
 				node = new BooleanNode(token.Value);
 				break;
 
 			case TokenType.Punctuation:
-				if (token.Value != "(") Throw_ExpressionExpected(token.Value);
+				if (token.Value != "(") Throw_Expected(token.Value);
 				node = ParseExpression();
-				if (!Match(TokenType.Punctuation, ")")) Throw_ExpressionExpected(Next().Value, ")");
+				if (!Match(TokenType.Punctuation, ")")) Throw_Expected(Next().Value, ")");
 				break;
 
 			default:
-				Throw_ExpressionExpected(token.Value);
+				Throw_Expected(token.Value);
 				throw new Exception();
 		}
 		return node;
@@ -324,6 +324,12 @@ internal class Parser(List<Token> _tokens)
 		return node;
 	}
 
+	/// <summary>
+	/// Creates a <see cref="DataType"/> from a string.
+	/// </summary>
+	/// <param name="text">The string to convert to a data type.</param>
+	/// <returns>The data type that the string represents.</returns>
+	/// <exception cref="EggSyntaxException">Thrown if the string does not represent any <see cref="DataType"/>.</exception>
 	private static DataType TypeFromString(string text) => text switch
 	{
 		"string" => DataType.String,
@@ -332,7 +338,13 @@ internal class Parser(List<Token> _tokens)
 		_ => throw new EggSyntaxException($"Invalid type {text}"),
 	};
 
+	/// <summary>
+	/// Helper function to throw an error when a token is expected but the parser didn't detect it.
+	/// </summary>
+	/// <param name="actual">What was detected instead of the expected token.</param>
+	/// <param name="expected">What was expected. Defaults to "Expression".</param>
+	/// <exception cref="EggSyntaxException">Thrown always.</exception>
 	[DoesNotReturn]
 	[StackTraceHidden]
-	private static void Throw_ExpressionExpected(string actual, string expected = "Expression") => throw new EggSyntaxException($"{expected} expected - got {actual}");
+	private static void Throw_Expected(string actual, string expected = "Expression") => throw new EggSyntaxException($"{expected} expected - got {actual}");
 }
