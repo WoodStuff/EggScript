@@ -29,4 +29,11 @@ internal class NumberNode : IDataNode
 	public static NumberNode operator -(NumberNode node) => new(-node.Value);
 
 	public override string ToString() => $"""NumberNode ({Value})""";
+	public override bool Equals(object? obj)
+	{
+		if (obj is NumberNode other) return Value == other.Value;
+		if (obj is double val) return Value == val;
+		return false;
+	}
+	public override int GetHashCode() => Value.GetHashCode();
 }

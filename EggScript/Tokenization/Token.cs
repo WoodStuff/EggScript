@@ -22,4 +22,6 @@ internal class Token(TokenType type, string value)
 	public int Length => Value.Length;
 
 	public override string ToString() => $"{Type} {Value}";
+	public override bool Equals(object? obj) => obj is Token other && Type == other.Type && Value == other.Value;
+	public override int GetHashCode() => HashCode.Combine(Type, Value);
 }

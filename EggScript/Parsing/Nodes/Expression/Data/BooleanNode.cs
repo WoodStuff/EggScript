@@ -22,4 +22,11 @@ internal class BooleanNode : IDataNode
 	public static BooleanNode operator !(BooleanNode node) => new(!node.Value);
 
 	public override string ToString() => $"""BooleanNode ({Value})""";
+	public override bool Equals(object? obj)
+	{
+		if (obj is BooleanNode other) return Value == other.Value;
+		if (obj is bool val) return Value == val;
+		return false;
+	}
+	public override int GetHashCode() => Value.GetHashCode();
 }

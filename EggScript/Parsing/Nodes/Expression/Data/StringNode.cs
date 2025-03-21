@@ -17,4 +17,12 @@ internal class StringNode(string value) : IDataNode
 	public static StringNode operator +(StringNode left, StringNode right) => new(left.Value + right.Value);
 
 	public override string ToString() => $"""StringNode ({Value})""";
+	public override bool Equals(object? obj)
+	{
+		if (obj is StringNode other) return Value == other.Value;
+		if (obj is string val) return Value == val;
+		return false;
+	}
+	public override int GetHashCode() => Value.GetHashCode();
+
 }
