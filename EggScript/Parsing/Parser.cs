@@ -158,7 +158,7 @@ internal class Parser(List<Token> _tokens)
 	private static IStatementNode ParseExprStatement(IExpressionNode expr)
 	{
 		IStatementNode node;
-		if (expr is OperatorNode { Left: VariableNode var } operatorNode && operatorNode.Operator == "=")
+		if (expr is OperatorNode { Left: IdentifierNode var } operatorNode && operatorNode.Operator == "=")
 		{
 			node = new VarAssignmentNode(var.Name, operatorNode.Right);
 		}
@@ -230,7 +230,7 @@ internal class Parser(List<Token> _tokens)
 		{
 			case TokenType.String: node = new StringNode(token.Value); break;
 			case TokenType.Number: node = new NumberNode(token.Value); break;
-			case TokenType.Identifier: node = new VariableNode(token.Value); break;
+			case TokenType.Identifier: node = new IdentifierNode(token.Value); break;
 
 			case TokenType.FreeKeyword:
 				if (!booleans.Contains(token.Value)) Throw_Expected(token.Value);

@@ -76,7 +76,7 @@ internal static class Interpreter
 		return node switch
 		{
 			IDataNode dataNode => dataNode,
-			VariableNode variableNode => GetVariable(variableNode.Name),
+			IdentifierNode identifierNode => GetVariable(identifierNode.Name),
 			OperatorNode operatorNode => ParseOperator(operatorNode),
 			UnaryOpNode unaryOpNode => ParseOperator(unaryOpNode),
 			_ => throw new EggRuntimeException($"Tried to get value of an invalid node: {node.GetType().Name}"),
@@ -164,7 +164,7 @@ internal static class Interpreter
 			},
 			"=" => node.Left switch
 			{
-				VariableNode l => ModifyVariable(l.Name, right),
+				IdentifierNode l => ModifyVariable(l.Name, right),
 				_ => throw new EggRuntimeException("Invalid data types in operator"),
 			},
 			_ => throw new EggRuntimeException("Invalid operator"),
