@@ -8,7 +8,7 @@ internal class OperatorNode(IExpressionNode left, string op, IExpressionNode rig
 	/// <summary>
 	/// The kind of operator, like addition or multiplication.
 	/// </summary>
-	public string Operator { get; } = op;
+	public string Operator { get; set; } = op;
 	/// <summary>
 	/// The left expression.
 	/// </summary>

@@ -8,7 +8,7 @@ internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 	/// <summary>
 	/// The kind of operator, like negation.
 	/// </summary>
-	public string Operator { get; } = op;
+	public string Operator { get; set; } = op;
 	/// <summary>
 	/// The expression to amplify.
 	/// </summary>

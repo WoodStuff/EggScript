@@ -11,9 +11,6 @@ namespace EggScript;
 /// </summary>
 public static class Eggscript
 {
-	private static string Root => $"{AppContext.BaseDirectory}/../../..";
-	private static string TestsPath => $"{Root}/tests.egg";
-
 	/// <summary>
 	/// Executes an .egg file.
 	/// </summary>
@@ -73,9 +70,4 @@ public static class Eggscript
 
 		Console.WriteLine(string.Join('\n', nodes));
 	}
-
-	/// <summary>
-	/// Runs tests.egg.
-	/// </summary>
-	internal static void Test() => Execute(TestsPath);
 }

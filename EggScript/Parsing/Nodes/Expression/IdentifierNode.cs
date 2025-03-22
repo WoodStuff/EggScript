@@ -1,4 +1,6 @@
-﻿namespace EggScript.Parsing.Nodes.Expression;
+﻿using EggScript.Parsing.Nodes.Expression.Data;
+
+namespace EggScript.Parsing.Nodes.Expression;
 
 /// <summary>
 /// Represents an identifier node.
@@ -12,4 +14,10 @@ internal class IdentifierNode(string name) : IExpressionNode
 	public string Name { get; } = name;
 
 	public override string ToString() => $"""IdentifierNode ({Name})""";
+	public override bool Equals(object? obj)
+	{
+		if (obj is IdentifierNode other) return Name == other.Name;
+		return false;
+	}
+	public override int GetHashCode() => Name.GetHashCode();
 }
