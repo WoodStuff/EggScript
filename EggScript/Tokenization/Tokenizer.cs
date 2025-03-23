@@ -54,7 +54,7 @@ internal static partial class Tokenizer
 		}
 
 		tokens.Add(new Token(TokenType.EOF, "end of file"));
-		
+
 		return tokens;
 	}
 

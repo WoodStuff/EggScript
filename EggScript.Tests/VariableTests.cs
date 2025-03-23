@@ -1,5 +1,4 @@
 ﻿using EggScript.Exceptions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EggScript.Tests;
 

@@ -1,6 +1,4 @@
-﻿using EggScript.Parsing.Nodes.Expression.Data;
-
-namespace EggScript.Parsing.Nodes.Expression;
+﻿namespace EggScript.Parsing.Nodes.Expression;
 
 /// <summary>
 /// Represents an identifier node.
