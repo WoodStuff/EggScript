@@ -67,7 +67,7 @@ internal static partial class Tokenizer
 
 	[GeneratedRegex(@"^(print|if|string|num|bool|const)\b")]
 	internal static partial Regex KeywordRegex();
-	[GeneratedRegex(@"^(true|false)\b")]
+	[GeneratedRegex(@"^(true|false|else)\b")]
 	internal static partial Regex FreeKeywordRegex();
 	[GeneratedRegex(@"^\s+")]
 	internal static partial Regex WhitespaceRegex();

@@ -70,6 +70,7 @@ internal static class Interpreter
 				if (condition is not BooleanNode result) throw new EggRuntimeException("If statement condition is not a boolean");
 
 				if (result.Value) ExecuteNodes(conditionalNode.Body);
+				else if (conditionalNode.Otherwise is not null) ExecuteNodes(conditionalNode.Otherwise);
 				break;
 
 			default:
