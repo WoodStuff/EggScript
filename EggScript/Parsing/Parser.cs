@@ -138,7 +138,7 @@ internal class Parser(List<Token> _tokens)
 				if (!Match(TokenType.Punctuation, ")")) Throw_Expected(Next().Value, ")");
 
 				List<IStatementNode> block = Match(TokenType.Punctuation, "{") ? ParseBlock() : [ParseStatement()];
-				node = new IfNode(condition, block);
+				node = new ConditionalNode(condition, block);
 
 				break;
 			}

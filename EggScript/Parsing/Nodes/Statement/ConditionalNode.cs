@@ -1,14 +1,13 @@
 ﻿using EggScript.Parsing.Nodes.Expression;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EggScript.Parsing.Nodes.Statement;
 
 /// <summary>
-/// A conditional statement.
+/// Executes a list of statements depending on if a condition is true.
 /// </summary>
 /// <param name="condition">If this is true, the body will be executed.</param>
 /// <param name="body">The statements to execute if the condition succeeds.</param>
-internal class IfNode(IExpressionNode condition, List<IStatementNode> body) : IStatementNode
+internal class ConditionalNode(IExpressionNode condition, List<IStatementNode> body) : IStatementNode
 {
 	/// <summary>
 	/// If this is true, the body will be executed.
