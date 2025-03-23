@@ -48,7 +48,7 @@ public sealed class BaseTests
 		string source = """print(true);""";
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"True{Br}", output.ToString());
+		Assert.AreEqual($"true{Br}", output.ToString());
 	}
 	#endregion
 

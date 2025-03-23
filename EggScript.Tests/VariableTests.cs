@@ -58,7 +58,7 @@ print(flag);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"True{Br}", output.ToString());
+		Assert.AreEqual($"true{Br}", output.ToString());
 	}
 
 	[TestMethod]
@@ -167,7 +167,7 @@ print(flag);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"hello{Br}7{Br}True{Br}", output.ToString());
+		Assert.AreEqual($"hello{Br}7{Br}true{Br}", output.ToString());
 	}
 
 	[TestMethod]

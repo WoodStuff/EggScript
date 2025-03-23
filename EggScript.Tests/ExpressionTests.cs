@@ -77,7 +77,7 @@ print(true | true);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"False{Br}True{Br}True{Br}", output.ToString());
+		Assert.AreEqual($"false{Br}true{Br}true{Br}", output.ToString());
 	}
 
 	[TestMethod]
@@ -90,7 +90,7 @@ print(true & true);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"False{Br}False{Br}True{Br}", output.ToString());
+		Assert.AreEqual($"false{Br}false{Br}true{Br}", output.ToString());
 	}
 
 	[TestMethod]
@@ -143,7 +143,7 @@ print(!false);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"False{Br}True{Br}", output.ToString());
+		Assert.AreEqual($"false{Br}true{Br}", output.ToString());
 	}
 
 	[TestMethod]
@@ -167,7 +167,7 @@ print(true == true);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"True{Br}True{Br}True{Br}", output.ToString());
+		Assert.AreEqual($"true{Br}true{Br}true{Br}", output.ToString());
 	}
 
 	[TestMethod]
@@ -180,7 +180,7 @@ print(true == false);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"False{Br}False{Br}False{Br}", output.ToString());
+		Assert.AreEqual($"false{Br}false{Br}false{Br}", output.ToString());
 	}
 
 	[TestMethod]
@@ -193,7 +193,7 @@ print(true != false);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"True{Br}True{Br}True{Br}", output.ToString());
+		Assert.AreEqual($"true{Br}true{Br}true{Br}", output.ToString());
 	}
 
 	[TestMethod]
@@ -206,7 +206,7 @@ print(true != true);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"False{Br}False{Br}False{Br}", output.ToString());
+		Assert.AreEqual($"false{Br}false{Br}false{Br}", output.ToString());
 	}
 	#endregion
 
@@ -221,7 +221,7 @@ print(10 > 20);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"True{Br}False{Br}False{Br}", output.ToString());
+		Assert.AreEqual($"true{Br}false{Br}false{Br}", output.ToString());
 	}
 
 	[TestMethod]
@@ -234,7 +234,7 @@ print(10 >= 20);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"True{Br}True{Br}False{Br}", output.ToString());
+		Assert.AreEqual($"true{Br}true{Br}false{Br}", output.ToString());
 	}
 
 	[TestMethod]
@@ -247,7 +247,7 @@ print(10 < 20);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"False{Br}False{Br}True{Br}", output.ToString());
+		Assert.AreEqual($"false{Br}false{Br}true{Br}", output.ToString());
 	}
 
 	[TestMethod]
@@ -260,7 +260,7 @@ print(10 <= 20);
 """;
 		Eggscript.ExecuteDirect(source);
 
-		Assert.AreEqual($"False{Br}True{Br}True{Br}", output.ToString());
+		Assert.AreEqual($"false{Br}true{Br}true{Br}", output.ToString());
 	}
 	#endregion
 
