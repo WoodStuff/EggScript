@@ -13,4 +13,8 @@ internal interface IDataNode : IExpressionNode
 	/// The data type of the <see cref="IDataNode"/>.
 	/// </summary>
 	DataType Type { get; }
+	/// <summary>
+	/// The string representation of the <see cref="IDataNode"/>.
+	/// </summary>
+	string StringValue { get; }
 }

@@ -53,7 +53,7 @@ internal static class Interpreter
 		switch (node)
 		{
 			case PrintNode printNode:
-				Console.WriteLine(GetValue(printNode.Data).Value);
+				Console.WriteLine(GetValue(printNode.Data).StringValue);
 				break;
 
 			case VarDeclarationNode varDecNode:

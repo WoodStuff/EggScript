@@ -13,6 +13,7 @@ internal class StringNode(string value) : IDataNode
 
 	object IDataNode.Value => Value;
 	DataType IDataNode.Type => DataType.String;
+	string IDataNode.StringValue => Value;
 
 	public static StringNode operator +(StringNode left, StringNode right) => new(left.Value + right.Value);
 

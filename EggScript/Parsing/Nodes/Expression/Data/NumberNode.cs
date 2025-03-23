@@ -12,6 +12,7 @@ internal class NumberNode : IDataNode
 
 	object IDataNode.Value => Value;
 	DataType IDataNode.Type => DataType.Number;
+	string IDataNode.StringValue => Value.ToString();
 
 	public NumberNode(double value) => Value = value;
 	public NumberNode(string value) => Value = double.Parse(value);

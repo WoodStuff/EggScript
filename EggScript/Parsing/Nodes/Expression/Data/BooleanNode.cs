@@ -12,6 +12,7 @@ internal class BooleanNode : IDataNode
 
 	object IDataNode.Value => Value;
 	DataType IDataNode.Type => DataType.Boolean;
+	string IDataNode.StringValue => Value ? "true" : "false";
 
 	public BooleanNode(bool value) => Value = value;
 	public BooleanNode(string value) => Value = bool.Parse(value);
