@@ -54,4 +54,9 @@ internal static partial class Interpreter
 		}
 		throw new EggRuntimeException($"Variable {name} was not declared in this scope");
 	}
+
+	/// <summary>
+	/// Adds a new scope.
+	/// </summary>
+	internal static void PushScope() => Scopes.Push(new());
 }

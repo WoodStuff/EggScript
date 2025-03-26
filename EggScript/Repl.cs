@@ -20,6 +20,7 @@ public static class Repl
 	public static void Start()
 	{
 		Console.WriteLine("EggScript Repl");
+		Interpreter.PushScope();
 
 		string input;
 		do

@@ -29,7 +29,7 @@ internal static partial class Interpreter
 	/// <param name="nodes">The statement nodes.</param>
 	private static void ExecuteNodes(List<IStatementNode> nodes)
 	{
-		Scopes.Push(new());
+		PushScope();
 		foreach (IStatementNode node in nodes)
 		{
 			ExecuteStatement(node);
