@@ -11,6 +11,7 @@ namespace EggScript.Runtime;
 /// </summary>
 internal static partial class Interpreter
 {
+	public static EggEnvironment Env { get; } = new();
 	private static readonly string[] operators_dontparseleft = ["="];
 
 	/// <summary>
@@ -29,12 +30,12 @@ internal static partial class Interpreter
 	/// <param name="nodes">The statement nodes.</param>
 	private static void ExecuteNodes(List<IStatementNode> nodes)
 	{
-		PushScope();
+		Env.PushScope();
 		foreach (IStatementNode node in nodes)
 		{
 			ExecuteStatement(node);
 		}
-		Scopes.Pop();
+		Env.PopScope();
 	}
 
 	/// <summary>
@@ -51,12 +52,12 @@ internal static partial class Interpreter
 				break;
 
 			case VarDeclarationNode varDecNode:
-				AddVariable(varDecNode.Name, varDecNode.Type, varDecNode.Constant);
-				if (varDecNode.Initialized) ModifyVariable(varDecNode.Name, GetValue(varDecNode.Data), true);
+				Env.AddVariable(varDecNode.Name, varDecNode.Type, varDecNode.Constant);
+				if (varDecNode.Initialized) Env.ModifyVariable(varDecNode.Name, GetValue(varDecNode.Data), true);
 				break;
 
 			case VarAssignmentNode varAssNode:
-				ModifyVariable(varAssNode.Name, GetValue(varAssNode.Data));
+				Env.ModifyVariable(varAssNode.Name, GetValue(varAssNode.Data));
 				break;
 
 			case ConditionalNode conditionalNode:
@@ -83,7 +84,7 @@ internal static partial class Interpreter
 		return node switch
 		{
 			IDataNode dataNode => dataNode,
-			IdentifierNode identifierNode => GetVariable(identifierNode.Name),
+			IdentifierNode identifierNode => Env.GetVariable(identifierNode.Name),
 			OperatorNode operatorNode => ParseOperator(operatorNode),
 			UnaryOpNode unaryOpNode => ParseOperator(unaryOpNode),
 			_ => throw new EggRuntimeException($"Tried to get value of an invalid node: {node.GetType().Name}"),
@@ -171,7 +172,7 @@ internal static partial class Interpreter
 			},
 			"=" => node.Left switch
 			{
-				IdentifierNode l => ModifyVariable(l.Name, right),
+				IdentifierNode l => Env.ModifyVariable(l.Name, right),
 				_ => throw new EggRuntimeException("Invalid data types in operator"),
 			},
 			_ => throw new EggRuntimeException("Invalid operator"),
