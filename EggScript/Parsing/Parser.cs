@@ -90,7 +90,7 @@ internal partial class Parser(List<Token> _tokens)
 		IStatementNode node;
 		switch (keyword)
 		{
-			case "print":
+			case "print": // print(5);
 			{
 				Expect(TokenType.Punctuation, "(");
 
@@ -101,13 +101,15 @@ internal partial class Parser(List<Token> _tokens)
 				break;
 			}
 
-			case "string":
-			case "num":
-			case "bool":
+			case "var": // var thing [num] = 5;   OR   var thing [num];
 			{
-				Expect(TokenType.Identifier, out string name);
+				Expect(TokenType.Identifier, out string name); // variable name
 
-				DataType type = TypeFromString(keyword);
+				Expect(TokenType.Punctuation, "[");
+				Expect(TokenType.FreeKeyword, out string typeString);
+				Expect(TokenType.Punctuation, "]");
+
+				DataType type = TypeFromString(typeString);
 
 				if (!Match(TokenType.Operator, "=")) // undeclared variable
 				{
@@ -120,25 +122,27 @@ internal partial class Parser(List<Token> _tokens)
 				break;
 			}
 
-			case "const":
+			case "const": // const thing [num] = 5;
 			{
-				if (!Match(TokenType.Keyword, out string type)) Throw_Expected(Next().Value, "Data type");
+				Expect(TokenType.Identifier, out string name); // variable name
 
-				node = ParseKeywordStatement(type);
-				if (node is not VarDeclarationNode decl) throw new EggSyntaxException("The const keyword can only be applied to variable declarations");
-				if (!decl.Initialized) throw new EggSyntaxException($"Constant variable {decl.Name} must be initialized");
+				Expect(TokenType.Punctuation, "[");
+				Expect(TokenType.FreeKeyword, out string typeString);
+				Expect(TokenType.Punctuation, "]");
 
-				decl.Constant = true;
-				node = decl;
+				DataType type = TypeFromString(typeString);
+
+				if (!Match(TokenType.Operator, "=")) throw new EggSyntaxException($"Constant variable {name} must be initialized");
+
+				IExpressionNode data = ParseExpression();
+				node = new VarDeclarationNode(name, type, data, true);
 
 				break;
 			}
 
-			case "if":
+			case "if": // if x > 5 { /* ... */ }   OR   if x > 5 { /* ... */ } else { /* ... */ }
 			{
-				Expect(TokenType.Punctuation, "(");
 				IExpressionNode condition = ParseExpression();
-				Expect(TokenType.Punctuation, ")");
 
 				List<IStatementNode> block = Match(TokenType.Punctuation, "{") ? ParseBlock() : [ParseStatement()];
 

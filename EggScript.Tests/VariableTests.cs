@@ -28,7 +28,7 @@ public sealed class VariableTests
 	public void Declaration_DeclaresString()
 	{
 		string source = """
-string text = "hello";
+var text [string] = "hello";
 print(text);
 """;
 		Eggscript.ExecuteDirect(source);
@@ -40,7 +40,7 @@ print(text);
 	public void Declaration_DeclaresNumber()
 	{
 		string source = """
-num seven = 7;
+var seven [num] = 7;
 print(seven);
 """;
 		Eggscript.ExecuteDirect(source);
@@ -52,7 +52,7 @@ print(seven);
 	public void Declaration_DeclaresBoolean()
 	{
 		string source = """
-bool flag = true;
+var flag [bool] = true;
 print(flag);
 """;
 		Eggscript.ExecuteDirect(source);
@@ -64,7 +64,7 @@ print(flag);
 	public void Declaration_WhenUsedUninitialized_ThrowsError()
 	{
 		string source = """
-string empty;
+var empty [string];
 print(empty);
 """;
 		Assert.ThrowsException<EggRuntimeException>(() => Eggscript.ExecuteDirect(source));
@@ -76,7 +76,7 @@ print(empty);
 	public void Assignment_ModifiesVariable()
 	{
 		string source = """
-string text = "hello";
+var text [string] = "hello";
 print(text);
 text = "line two";
 print(text);
@@ -90,7 +90,7 @@ print(text);
 	public void Assignment_InitializesUninitializedVariable()
 	{
 		string source = """
-string text;
+var text [string];
 text = "hello";
 print(text);
 """;
@@ -105,7 +105,7 @@ print(text);
 	public void Declaration_SupportsExpressions()
 	{
 		string source = """
-num result = 2 + 7 * 8;
+var result [num] = 2 + 7 * 8;
 print(result);
 """;
 		Eggscript.ExecuteDirect(source);
@@ -117,7 +117,7 @@ print(result);
 	public void Assignment_SupportsExpressions()
 	{
 		string source = """
-num result;
+var result [num];
 result = 2 + 7 * 8;
 print(result);
 """;
@@ -130,8 +130,8 @@ print(result);
 	public void Variable_CanBeSetToOtherVariable()
 	{
 		string source = """
-num three = 3;
-num result = three;
+var three [num] = 3;
+var result [num] = three;
 print(result);
 """;
 		Eggscript.ExecuteDirect(source);
@@ -143,7 +143,7 @@ print(result);
 	public void Variable_CanBeModifiedWithOperators()
 	{
 		string source = """
-num five = 5;
+var five [num] = 5;
 print(five + 6);
 """;
 		Eggscript.ExecuteDirect(source);
@@ -157,9 +157,9 @@ print(five + 6);
 	public void ConstVariable_HoldsData()
 	{
 		string source = """
-const string text = "hello";
-const num seven = 7;
-const bool flag = true;
+const text [string] = "hello";
+const seven [num] = 7;
+const flag [bool] = true;
 print(text);
 print(seven);
 print(flag);
@@ -173,7 +173,7 @@ print(flag);
 	public void ConstVariable_WhenReassigned_ThrowsError()
 	{
 		string source = """
-const string text = "hello";
+const text [string] = "hello";
 text = "line two";
 """;
 		Assert.ThrowsException<EggRuntimeException>(() => Eggscript.ExecuteDirect(source));
@@ -183,7 +183,7 @@ text = "line two";
 	public void ConstVariable_WhenDeclaredUninitialized_ThrowsError()
 	{
 		string source = """
-const num something;
+const something [num];
 """;
 		Assert.ThrowsException<EggSyntaxException>(() => Eggscript.ExecuteDirect(source));
 	}

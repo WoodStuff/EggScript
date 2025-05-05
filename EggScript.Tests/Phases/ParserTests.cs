@@ -109,14 +109,14 @@ public sealed class ParserTests
 	[TestMethod]
 	public void Parser_HandlesVarDeclarationCorrectly()
 	{
-		IStatementNode node = Parser.ParseStatement("""num n = 2;""");
+		IStatementNode node = Parser.ParseStatement("""var n [num] = 2;""");
 		Assert.IsInstanceOfType<VarDeclarationNode>(node);
 		Assert.AreEqual("n", ((VarDeclarationNode)node).Name);
 		Assert.AreEqual(new NumberNode(2), ((VarDeclarationNode)node).Data);
 		Assert.AreEqual(DataType.Number, ((VarDeclarationNode)node).Type);
 		Assert.IsFalse(((VarDeclarationNode)node).Constant);
 
-		node = Parser.ParseStatement("""string text = "hello";""");
+		node = Parser.ParseStatement("""var text [string] = "hello";""");
 		Assert.IsInstanceOfType<VarDeclarationNode>(node);
 		Assert.AreEqual("text", ((VarDeclarationNode)node).Name);
 		Assert.AreEqual(new StringNode("hello"), ((VarDeclarationNode)node).Data);
@@ -127,14 +127,14 @@ public sealed class ParserTests
 	[TestMethod]
 	public void Parser_HandlesConstVarDeclarationCorrectly()
 	{
-		IStatementNode node = Parser.ParseStatement("""const num n = 2;""");
+		IStatementNode node = Parser.ParseStatement("""const n [num] = 2;""");
 		Assert.IsInstanceOfType<VarDeclarationNode>(node);
 		Assert.AreEqual("n", ((VarDeclarationNode)node).Name);
 		Assert.AreEqual(new NumberNode(2), ((VarDeclarationNode)node).Data);
 		Assert.AreEqual(DataType.Number, ((VarDeclarationNode)node).Type);
 		Assert.IsTrue(((VarDeclarationNode)node).Constant);
 
-		node = Parser.ParseStatement("""const string text = "hello";""");
+		node = Parser.ParseStatement("""const text [string] = "hello";""");
 		Assert.IsInstanceOfType<VarDeclarationNode>(node);
 		Assert.AreEqual("text", ((VarDeclarationNode)node).Name);
 		Assert.AreEqual(new StringNode("hello"), ((VarDeclarationNode)node).Data);
@@ -154,7 +154,7 @@ public sealed class ParserTests
 	[TestMethod]
 	public void Parser_HandlesIfStatementCorrectly()
 	{
-		IStatementNode node = Parser.ParseStatement("""if (true) { print("success"); print(2); }""");
+		IStatementNode node = Parser.ParseStatement("""if true { print("success"); print(2); }""");
 		Assert.IsInstanceOfType<ConditionalNode>(node);
 		Assert.IsInstanceOfType<BooleanNode>(((ConditionalNode)node).Condition);
 		Assert.AreEqual(2, ((ConditionalNode)node).Body.Count);
