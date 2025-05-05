@@ -92,12 +92,12 @@ internal partial class Parser(List<Token> _tokens)
 		{
 			case "print":
 			{
-				if (!Match(TokenType.Punctuation, "(")) Throw_Expected(Next().Value, "(");
+				Expect(TokenType.Punctuation, "(");
 
 				IExpressionNode data = ParseExpression();
 				node = new PrintNode(data);
 
-				if (!Match(TokenType.Punctuation, ")")) Throw_Expected(Next().Value, ")");
+				Expect(TokenType.Punctuation, ")");
 				break;
 			}
 
@@ -105,7 +105,7 @@ internal partial class Parser(List<Token> _tokens)
 			case "num":
 			case "bool":
 			{
-				if (!Match(TokenType.Identifier, out string name)) Throw_Expected(Next().Value, "Identifier");
+				Expect(TokenType.Identifier, out string name);
 
 				DataType type = TypeFromString(keyword);
 
@@ -136,9 +136,9 @@ internal partial class Parser(List<Token> _tokens)
 
 			case "if":
 			{
-				if (!Match(TokenType.Punctuation, "(")) Throw_Expected(Next().Value, "(");
+				Expect(TokenType.Punctuation, "(");
 				IExpressionNode condition = ParseExpression();
-				if (!Match(TokenType.Punctuation, ")")) Throw_Expected(Next().Value, ")");
+				Expect(TokenType.Punctuation, ")");
 
 				List<IStatementNode> block = Match(TokenType.Punctuation, "{") ? ParseBlock() : [ParseStatement()];
 
@@ -250,7 +250,7 @@ internal partial class Parser(List<Token> _tokens)
 			case TokenType.Punctuation:
 				if (token.Value != "(") Throw_Expected(token.Value);
 				node = ParseExpression();
-				if (!Match(TokenType.Punctuation, ")")) Throw_Expected(Next().Value, ")");
+				Expect(TokenType.Punctuation, ")");
 				break;
 
 			default:

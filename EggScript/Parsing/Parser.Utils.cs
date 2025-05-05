@@ -65,6 +65,28 @@ internal partial class Parser
 		Index++;
 		return token;
 	}
+
+	/// <summary>
+	/// Expects a constant token, and throws an error if that token is not there.
+	/// </summary>
+	/// <param name="type">What type the next token should have.</param>
+	/// <param name="value">What value the next token should have.</param>
+	/// <exception cref="EggSyntaxException">Thrown if the specified token is not next.</exception>
+	private void Expect(TokenType type, string value)
+	{
+		if (!Match(type, value)) Throw_Expected(Next().Value, value);
+	}
+
+	/// <summary>
+	/// Expects a constant token type, and throws an error if that token is not there.
+	/// </summary>
+	/// <param name="type">What type the next token should have.</param>
+	/// <param name="value">The value of the token.</param>
+	/// <exception cref="EggSyntaxException">Thrown if the specified token is not next.</exception>
+	private void Expect(TokenType type, out string value)
+	{
+		if (!Match(type, out value)) Throw_Expected(Next().Value, type.ToString());
+	}
 	#endregion
 
 	#region Helper Methods
