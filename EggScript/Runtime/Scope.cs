@@ -5,6 +5,9 @@ using EggScript.Parsing.Nodes.Expression.Data;
 
 namespace EggScript.Runtime;
 
+/// <summary>
+/// A scope, which holds variables.
+/// </summary>
 internal class Scope
 {
 	/// <summary>
@@ -12,13 +15,18 @@ internal class Scope
 	/// </summary>
 	private Dictionary<string, Variable> Variables { get; } = [];
 
+	/// <summary>
+	/// Checks if this scope contains a variable. If not, a previous scope might contain it.
+	/// </summary>
+	/// <param name="name">The name of the variable.</param>
+	/// <returns>If this scope contains the variable.</returns>
 	public bool ContainsVariable(string name) => Variables.ContainsKey(name);
 
 	/// <summary>
 	/// Declares a variable with the given name and data.
 	/// </summary>
 	/// <param name="name">The name of the variable.</param>
-	/// <param name="data">The variable's value.</param>
+	/// <param name="type">The variable's type.</param>
 	/// <param name="constant">If the variable is a constant.</param>
 	/// <exception cref="EggRuntimeException">Thrown when the variable has already been declared.</exception>
 	public void AddVariable(string name, DataType type, bool constant = false)
@@ -28,10 +36,11 @@ internal class Scope
 	}
 
 	/// <summary>
-	/// Gets a variable's value.
+	/// Tries to get a variable's value.
 	/// </summary>
 	/// <param name="name">The name of the variable.</param>
-	/// <returns>The variable's value.</returns>
+	/// <param name="data">The data the variable holds, if the variable was found.</param>
+	/// <returns>If the variable was successfully found.</returns>
 	/// <exception cref="EggRuntimeException">Thrown when the variable has not been declared yet.</exception>
 	public bool TryGetVariable(string name, [NotNullWhen(true)] out IDataNode? data)
 	{

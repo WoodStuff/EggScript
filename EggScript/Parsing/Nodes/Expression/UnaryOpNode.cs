@@ -3,6 +3,8 @@
 /// <summary>
 /// Represents a unary operator node.
 /// </summary>
+/// <param name="op">The kind of operator, like negation.</param>
+/// <param name="value">The expression to amplify.</param>
 internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 {
 	/// <summary>

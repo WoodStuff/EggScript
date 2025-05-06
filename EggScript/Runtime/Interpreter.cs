@@ -11,7 +11,15 @@ namespace EggScript.Runtime;
 /// </summary>
 internal static partial class Interpreter
 {
+	/// <summary>
+	/// The interpreter's environment. Includes things like the scope, which contain variables.
+	/// </summary>
 	public static EggEnvironment Env { get; } = new();
+
+	/// <summary>
+	/// Operators where the left side shouldn't be evaluated.
+	/// Used for operators that act directly on variables, which don't require the variable's data.
+	/// </summary>
 	private static readonly string[] operators_dontparseleft = ["="];
 
 	/// <summary>

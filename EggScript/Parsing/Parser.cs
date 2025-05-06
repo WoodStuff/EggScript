@@ -1,4 +1,5 @@
-﻿using EggScript.Exceptions;
+﻿using System;
+using EggScript.Exceptions;
 using EggScript.Parsing.Nodes.Expression;
 using EggScript.Parsing.Nodes.Expression.Data;
 using EggScript.Parsing.Nodes.Statement;
@@ -13,7 +14,13 @@ namespace EggScript.Parsing;
 internal partial class Parser(List<Token> _tokens)
 {
 	#region Fields
+	/// <summary>
+	/// The "free keywords" that represent booleans.
+	/// </summary>
 	private static readonly string[] booleans = ["true", "false"];
+	/// <summary>
+	/// All the binary operators along with their precedence. The higher the number, the more precedence it has.
+	/// </summary>
 	private static readonly Dictionary<int, string[]> operators = new()
 	{
 		{ 0, ["="] },
@@ -24,7 +31,13 @@ internal partial class Parser(List<Token> _tokens)
 		{ 5, ["+", "-"] },
 		{ 6, ["*", "/"] },
 	};
+	/// <summary>
+	/// All the unary operators. These always have higher precedence than any binary operator.
+	/// </summary>
 	private static readonly string[] unaryOperators = ["+", "-", "!"];
+	/// <summary>
+	/// The statements that can't have a semicolon after them. This includes if statements, and later, loops and functions.
+	/// </summary>
 	private static readonly string[] keywordsNoSemicolons = ["if"];
 	#endregion
 
@@ -90,7 +103,8 @@ internal partial class Parser(List<Token> _tokens)
 		IStatementNode node;
 		switch (keyword)
 		{
-			case "print": // print(5);
+			// print(5);
+			case "print":
 			{
 				Expect(TokenType.Punctuation, "(");
 
@@ -101,7 +115,9 @@ internal partial class Parser(List<Token> _tokens)
 				break;
 			}
 
-			case "var": // var thing [num] = 5;   OR   var thing [num];
+			// var thing [num] = 5;
+			// var thing [num];
+			case "var":
 			{
 				Expect(TokenType.Identifier, out string name); // variable name
 
@@ -122,7 +138,8 @@ internal partial class Parser(List<Token> _tokens)
 				break;
 			}
 
-			case "const": // const thing [num] = 5;
+			// const thing [num] = 5;
+			case "const":
 			{
 				Expect(TokenType.Identifier, out string name); // variable name
 
@@ -140,7 +157,9 @@ internal partial class Parser(List<Token> _tokens)
 				break;
 			}
 
-			case "if": // if x > 5 { /* ... */ }   OR   if x > 5 { /* ... */ } else { /* ... */ }
+			// if x > 5 { ... }
+			// if x > 5 { ... } else { ... }
+			case "if":
 			{
 				IExpressionNode condition = ParseExpression();
 
@@ -205,6 +224,8 @@ internal partial class Parser(List<Token> _tokens)
 		}
 		return data;
 
+		// parses the operators with higher precedence
+		// e.g. if we're parsing + -, this will parse * /
 		IExpressionNode GetLowerExpression(int level)
 		{
 			if (level == operators.Count - 1)
@@ -246,11 +267,13 @@ internal partial class Parser(List<Token> _tokens)
 			case TokenType.Number: node = new NumberNode(token.Value); break;
 			case TokenType.Identifier: node = new IdentifierNode(token.Value); break;
 
+			// booleans
 			case TokenType.FreeKeyword:
 				if (!booleans.Contains(token.Value)) Throw_Expected(token.Value);
 				node = new BooleanNode(token.Value);
 				break;
 
+			// parentheses
 			case TokenType.Punctuation:
 				if (token.Value != "(") Throw_Expected(token.Value);
 				node = ParseExpression();
@@ -271,6 +294,7 @@ internal partial class Parser(List<Token> _tokens)
 	private List<IStatementNode> ParseBlock()
 	{
 		List<IStatementNode> nodes = [];
+
 		while (!Match(TokenType.Punctuation, "}"))
 		{
 			nodes.Add(ParseStatement());

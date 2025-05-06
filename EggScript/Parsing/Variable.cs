@@ -34,7 +34,7 @@ internal class Variable(DataType type, bool constant = false)
 	public bool Constant { get; } = constant;
 
 	/// <summary>
-	/// If the variable is initialized. An uninitialized variable is defined like: string txt;
+	/// If the variable is initialized. An uninitialized variable is defined like: var txt [string];
 	/// </summary>
 	[MemberNotNullWhen(true, nameof(Data))]
 	public bool Initialized => Data != null;

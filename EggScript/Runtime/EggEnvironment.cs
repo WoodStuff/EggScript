@@ -4,9 +4,18 @@ using EggScript.Parsing.Nodes.Expression.Data;
 
 namespace EggScript.Runtime;
 
+/// <summary>
+/// The environment of the EggScript runtime.
+/// </summary>
 internal class EggEnvironment
 {
+	/// <summary>
+	/// The stack of all scopes.
+	/// </summary>
 	private Stack<Scope> Scopes { get; } = [];
+	/// <summary>
+	/// The deepest scope - declared variables will be added to this scope. This is the last scope in <see cref="Scopes"/>.
+	/// </summary>
 	private Scope CurrentScope => Scopes.Peek();
 
 	/// <summary>

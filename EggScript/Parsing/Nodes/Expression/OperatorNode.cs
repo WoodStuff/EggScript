@@ -3,6 +3,9 @@
 /// <summary>
 /// Represents a binary operator node.
 /// </summary>
+/// <param name="left">The left expression.</param>
+/// <param name="op">The kind of operator, like addition or multiplication.</param>
+/// <param name="right">The right expression.</param>
 internal class OperatorNode(IExpressionNode left, string op, IExpressionNode right) : IExpressionNode
 {
 	/// <summary>

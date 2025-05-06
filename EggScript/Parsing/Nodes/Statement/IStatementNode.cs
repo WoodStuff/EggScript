@@ -5,4 +5,5 @@
 /// </summary>
 internal interface IStatementNode : INode
 {
+
 }

@@ -12,6 +12,9 @@ namespace EggScript;
 /// </summary>
 public static class Repl
 {
+	/// <summary>
+	/// Position of the last arrow.
+	/// </summary>
 	private static (int x, int y) ArrowPos { get; set; } = (0, 0);
 
 	/// <summary>
