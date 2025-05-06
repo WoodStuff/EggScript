@@ -15,7 +15,7 @@ internal class BooleanNode : IDataNode
 	string IDataNode.StringValue => Value ? "true" : "false";
 
 	public BooleanNode(bool value) => Value = value;
-	public BooleanNode(string value) => Value = bool.Parse(value);
+	public BooleanNode(string value) => Value = value == "true";
 
 	public static BooleanNode operator &(BooleanNode left, BooleanNode right) => new(left.Value && right.Value);
 	public static BooleanNode operator |(BooleanNode left, BooleanNode right) => new(left.Value || right.Value);
