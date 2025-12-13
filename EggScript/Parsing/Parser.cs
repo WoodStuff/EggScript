@@ -164,12 +164,12 @@ internal partial class Parser(List<Token> _tokens)
 			{
 				IExpressionNode condition = ParseExpression();
 
-				BlockNode block = Match(TokenType.Punctuation, "{") ? ParseBlock() : new([ParseStatement()]);
+				BlockNode block = Match(TokenType.Punctuation, "{") ? ParseBlock() : new(ParseStatement());
 
 				BlockNode? otherwise = null;
 				if (Match(TokenType.FreeKeyword, "else"))
 				{
-					otherwise = Match(TokenType.Punctuation, "{") ? ParseBlock() : new([ParseStatement()]);
+					otherwise = Match(TokenType.Punctuation, "{") ? ParseBlock() : new(ParseStatement());
 				}
 
 				node = new ConditionalNode(condition, block, otherwise);
@@ -294,14 +294,14 @@ internal partial class Parser(List<Token> _tokens)
 	/// <returns>A list of statements in the block.</returns>
 	private BlockNode ParseBlock()
 	{
-		List<IStatementNode> nodes = [];
+		BlockNode block = new();
 
 		while (!Match(TokenType.Punctuation, "}"))
 		{
-			nodes.Add(ParseStatement());
+			block.Add(ParseStatement());
 		}
 
-		return new BlockNode(nodes);
+		return block;
 	}
 	#endregion
 

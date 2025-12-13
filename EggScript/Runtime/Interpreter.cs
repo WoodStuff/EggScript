@@ -70,12 +70,7 @@ internal static partial class Interpreter
 				break;
 
 			case BlockNode blockNode:
-				Env.PushScope();
-				foreach (IStatementNode statement in blockNode.Nodes)
-				{
-					ExecuteStatement(statement);
-				}
-				Env.PopScope();
+				ExecuteNodes(blockNode.Nodes);
 				break;
 
 			default:
