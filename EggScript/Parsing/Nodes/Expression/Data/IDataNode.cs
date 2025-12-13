@@ -1,4 +1,6 @@
-﻿namespace EggScript.Parsing.Nodes.Expression.Data;
+﻿using EggScript.Runtime;
+
+namespace EggScript.Parsing.Nodes.Expression.Data;
 
 /// <summary>
 /// A node that represents data, like strings or numbers.
@@ -17,4 +19,6 @@ internal interface IDataNode : IExpressionNode
 	/// The string representation of the <see cref="IDataNode"/>.
 	/// </summary>
 	string StringValue { get; }
+
+	IDataNode IExpressionNode.GetValue(EggEnvironment env) => this;
 }

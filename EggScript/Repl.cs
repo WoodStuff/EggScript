@@ -62,7 +62,7 @@ public static class Repl
 		try
 		{
 			IExpressionNode node = Parser.ParseExpression(input);
-			Console.WriteLine(Interpreter.GetValue(node).StringValue);
+			Console.WriteLine(node.GetValue(Interpreter.Env).StringValue);
 			return true;
 		}
 		catch (EggScriptException e)

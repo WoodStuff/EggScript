@@ -7,16 +7,21 @@ namespace EggScript.Tests.Phases;
 [TestClass]
 public sealed class InterpreterTests
 {
+	private static EggEnvironment Env => Interpreter.Env;
+	
 	[TestMethod]
 	public void Interpreter_HandlesPrimitivesCorrectly()
 	{
-		IDataNode result = Interpreter.GetValue(new NumberNode(2));
+		IDataNode node = new NumberNode(2);
+		IDataNode result = node.GetValue(Env);
 		Assert.AreEqual(new NumberNode(2), result);
 
-		result = Interpreter.GetValue(new StringNode("hello"));
+		node = new StringNode("hello");
+		result = node.GetValue(Env);
 		Assert.AreEqual(new StringNode("hello"), result);
 
-		result = Interpreter.GetValue(new BooleanNode(true));
+		node = new BooleanNode(true);
+		result = node.GetValue(Env);
 		Assert.AreEqual(new BooleanNode(true), result);
 	}
 
@@ -24,22 +29,22 @@ public sealed class InterpreterTests
 	public void Interpreter_CalculatesOperatorsCorrectly()
 	{
 		OperatorNode node = new(new NumberNode(15), "+", new NumberNode(5));
-		Assert.AreEqual(new NumberNode(20), Interpreter.GetValue(node));
+		Assert.AreEqual(new NumberNode(20), node.GetValue(Env));
 
 		node.Operator = "-";
-		Assert.AreEqual(new NumberNode(10), Interpreter.GetValue(node));
+		Assert.AreEqual(new NumberNode(10), node.GetValue(Env));
 
 		node.Operator = "*";
-		Assert.AreEqual(new NumberNode(75), Interpreter.GetValue(node));
+		Assert.AreEqual(new NumberNode(75), node.GetValue(Env));
 
 		node.Operator = "/";
-		Assert.AreEqual(new NumberNode(3), Interpreter.GetValue(node));
+		Assert.AreEqual(new NumberNode(3), node.GetValue(Env));
 	}
 
 	[TestMethod]
 	public void Interpreter_CalculatesUnaryOperatorsCorrectly()
 	{
 		UnaryOpNode node = new("-", new NumberNode(5));
-		Assert.AreEqual(new NumberNode(-5), Interpreter.GetValue(node));
+		Assert.AreEqual(new NumberNode(-5), node.GetValue(Env));
 	}
 }

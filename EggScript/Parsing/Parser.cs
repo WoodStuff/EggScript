@@ -1,5 +1,4 @@
-﻿using System;
-using EggScript.Exceptions;
+﻿using EggScript.Exceptions;
 using EggScript.Parsing.Nodes.Expression;
 using EggScript.Parsing.Nodes.Expression.Data;
 using EggScript.Parsing.Nodes.Statement;

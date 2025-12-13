@@ -1,4 +1,8 @@
-﻿namespace EggScript.Parsing.Nodes.Expression;
+﻿using EggScript.Exceptions;
+using EggScript.Parsing.Nodes.Expression.Data;
+using EggScript.Runtime;
+
+namespace EggScript.Parsing.Nodes.Expression;
 
 /// <summary>
 /// Represents a unary operator node.
@@ -15,6 +19,31 @@ internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 	/// The expression to amplify.
 	/// </summary>
 	public IExpressionNode Operand { get; } = value;
+
+	public IDataNode GetValue(EggEnvironment env)
+	{
+		IDataNode operand = Operand.GetValue(env);
+
+		return Operator switch
+		{
+			"+" => operand switch
+			{
+				NumberNode n => +n,
+				_ => throw new EggRuntimeException("Invalid data types in operator"),
+			},
+			"-" => operand switch
+			{
+				NumberNode n => -n,
+				_ => throw new EggRuntimeException("Invalid data types in operator"),
+			},
+			"!" => operand switch
+			{
+				BooleanNode n => !n,
+				_ => throw new EggRuntimeException("Invalid data types in operator"),
+			},
+			_ => throw new EggRuntimeException("Invalid operator"),
+		};
+	}
 
 	public override string ToString()
 	{
