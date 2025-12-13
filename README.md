@@ -5,7 +5,7 @@ A language I made because I felt like it. Built in C#.
 - Recognizes strings and numbers and booleans
 - Operators, including a string concatenation operator (yay!)
 - Unary operators (was hard to make)
-- Parentheses (hard thing I made without chatgpt help :))
+- Parentheses
 - Print keyword that prints stuff to the console
 - Fully functional comments, both the // kind and the /* */ kind
 - Mandatory semicolons, because I'm addicted to those
@@ -20,14 +20,14 @@ print("Hi!");
 print("I like EggScript");
 
 /* Variables */
-num a = 2;
-const num b = 3;
-const num c = (a + b) * 3;
+var a [num] = 2;
+const b [num] = 3;
+const c [num] = (a + b) * 3;
 print(c); // 15
 
 /* This part looks different from the others
    but I don't know what to name it */
 a = a * 5;
 print(a); // 10
-print(a > 8 & a < 13); // True
+print(a > 8 & a < 13); // true
 ```
