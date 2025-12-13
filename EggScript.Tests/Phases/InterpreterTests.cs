@@ -8,7 +8,7 @@ namespace EggScript.Tests.Phases;
 public sealed class InterpreterTests
 {
 	private static EggEnvironment Env => Interpreter.Env;
-	
+
 	[TestMethod]
 	public void Interpreter_HandlesPrimitivesCorrectly()
 	{

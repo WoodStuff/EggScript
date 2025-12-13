@@ -1,6 +1,4 @@
-﻿using EggScript.Parsing.Nodes.Expression;
-
-namespace EggScript.Parsing.Nodes.Statement;
+﻿namespace EggScript.Parsing.Nodes.Statement;
 
 /// <summary>
 /// A node containing multiple statements, each executed in a new scope.
