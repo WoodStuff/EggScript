@@ -37,7 +37,7 @@ internal partial class Parser(List<Token> _tokens)
 	/// <summary>
 	/// The statements that can't have a semicolon after them. This includes if statements, and later, loops and functions.
 	/// </summary>
-	private static readonly string[] keywordsNoSemicolons = ["if"];
+	private static readonly string[] keywordsNoSemicolons = ["", "if"];
 	#endregion
 
 	#region Properties
@@ -80,8 +80,10 @@ internal partial class Parser(List<Token> _tokens)
 		IStatementNode node;
 
 		if (Match(TokenType.Keyword, out string keyword)) node = ParseKeywordStatement(keyword);
+		else if (Match(TokenType.Punctuation, "{")) node = ParseBlock();
 		else
 		{
+			keyword = "exprstatement";
 			IExpressionNode expr = ParseExpression();
 			node = ParseExprStatement(expr);
 		}
@@ -162,12 +164,12 @@ internal partial class Parser(List<Token> _tokens)
 			{
 				IExpressionNode condition = ParseExpression();
 
-				List<IStatementNode> block = Match(TokenType.Punctuation, "{") ? ParseBlock() : [ParseStatement()];
+				BlockNode block = Match(TokenType.Punctuation, "{") ? ParseBlock() : new([ParseStatement()]);
 
-				List<IStatementNode>? otherwise = null;
+				BlockNode? otherwise = null;
 				if (Match(TokenType.FreeKeyword, "else"))
 				{
-					otherwise = Match(TokenType.Punctuation, "{") ? ParseBlock() : [ParseStatement()];
+					otherwise = Match(TokenType.Punctuation, "{") ? ParseBlock() : new([ParseStatement()]);
 				}
 
 				node = new ConditionalNode(condition, block, otherwise);
@@ -290,7 +292,7 @@ internal partial class Parser(List<Token> _tokens)
 	/// Parses a block statement, which is a list of statements enclosed by { }. Assumes the { was already matched.
 	/// </summary>
 	/// <returns>A list of statements in the block.</returns>
-	private List<IStatementNode> ParseBlock()
+	private BlockNode ParseBlock()
 	{
 		List<IStatementNode> nodes = [];
 
@@ -299,7 +301,7 @@ internal partial class Parser(List<Token> _tokens)
 			nodes.Add(ParseStatement());
 		}
 
-		return nodes;
+		return new BlockNode(nodes);
 	}
 	#endregion
 

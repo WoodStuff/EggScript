@@ -66,8 +66,17 @@ internal static partial class Interpreter
 				IDataNode condition = conditionalNode.Condition.GetValue(Env);
 				if (condition is not BooleanNode result) throw new EggRuntimeException("If statement condition is not a boolean");
 
-				if (result.Value) ExecuteNodes(conditionalNode.Body);
-				else if (conditionalNode.Otherwise is not null) ExecuteNodes(conditionalNode.Otherwise);
+				if (result.Value) ExecuteStatement(conditionalNode.Body);
+				else if (conditionalNode.Otherwise is not null) ExecuteStatement(conditionalNode.Otherwise);
+				break;
+
+			case BlockNode blockNode:
+				Env.PushScope();
+				foreach (IStatementNode statement in blockNode.Nodes)
+				{
+					ExecuteStatement(statement);
+				}
+				Env.PopScope();
 				break;
 
 			default:

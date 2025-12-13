@@ -15,7 +15,7 @@ internal class BlockNode(List<IStatementNode> nodes) : IStatementNode
 
 	public override string ToString()
 	{
-		string data = "".ToString()!.Replace("\n", "\n    ");
+		string data = string.Join('\n', Nodes).ToString()!.Replace("\n", "\n    ");
 		return $"""
 BlockNode
 (
