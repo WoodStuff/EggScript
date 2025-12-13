@@ -24,25 +24,32 @@ internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 	{
 		IDataNode operand = Operand.GetValue(env);
 
-		return Operator switch
+		switch (Operator)
 		{
-			"+" => operand switch
-			{
-				NumberNode n => +n,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"-" => operand switch
-			{
-				NumberNode n => -n,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"!" => operand switch
-			{
-				BooleanNode n => !n,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			_ => throw new EggRuntimeException("Invalid operator"),
-		};
+			case "+":
+				return operand switch
+				{
+					NumberNode n => +n,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "-":
+				return operand switch
+				{
+					NumberNode n => -n,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "!":
+				return operand switch
+				{
+					BooleanNode n => !n,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			default:
+				throw new EggRuntimeException("Invalid operator");
+		}
 	}
 
 	public override string ToString()
