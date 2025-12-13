@@ -157,9 +157,9 @@ public sealed class ParserTests
 		IStatementNode node = Parser.ParseStatement("""if true { print("success"); print(2); }""");
 		Assert.IsInstanceOfType<ConditionalNode>(node);
 		Assert.IsInstanceOfType<BooleanNode>(((ConditionalNode)node).Condition);
-		Assert.AreEqual(2, ((ConditionalNode)node).Body.Count);
-		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Body[0]);
-		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Body[1]);
+		Assert.AreEqual(2, ((ConditionalNode)node).Body.Nodes.Count);
+		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Body.Nodes[0]);
+		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Body.Nodes[1]);
 	}
 
 	[TestMethod]
