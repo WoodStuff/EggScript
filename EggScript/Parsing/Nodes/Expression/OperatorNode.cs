@@ -128,15 +128,25 @@ internal class OperatorNode(IExpressionNode left, string op, IExpressionNode rig
 				};
 
 			case "=":
+				switch (Left)
+				{
+					case IdentifierNode:
+						Interpreter.ExecuteStatement(Parser.ParseExprStatement(this));
+						return right;
+
+					default:
+						throw new EggRuntimeException("Invalid data types in operator");
+				}
+
 			case "+=":
 			case "-=":
 			case "*=":
 			case "/=":
 				switch (Left)
 				{
-					case IdentifierNode:
+					case IdentifierNode l:
 						Interpreter.ExecuteStatement(Parser.ParseExprStatement(this));
-						return right;
+						return env.GetVariable(l.Name);
 
 					default:
 						throw new EggRuntimeException("Invalid data types in operator");
