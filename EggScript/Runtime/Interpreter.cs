@@ -30,14 +30,15 @@ internal static partial class Interpreter
 	/// Executes a list of statement nodes.
 	/// </summary>
 	/// <param name="nodes">The statement nodes.</param>
-	private static void ExecuteNodes(List<IStatementNode> nodes)
+	/// <param name="controlScopes">If the nodes should be executed in a new scope.</param>
+	private static void ExecuteNodes(List<IStatementNode> nodes, bool controlScopes = true)
 	{
-		Env.PushScope();
+		if (controlScopes) Env.PushScope();
 		foreach (IStatementNode node in nodes)
 		{
 			ExecuteStatement(node);
 		}
-		Env.PopScope();
+		if (controlScopes) Env.PopScope();
 	}
 
 	/// <summary>
@@ -70,16 +71,41 @@ internal static partial class Interpreter
 				break;
 
 			case ConditionalNode conditionalNode:
+			{
 				IDataNode condition = conditionalNode.Condition.GetValue(Env);
 				if (condition is not BooleanNode result) throw new EggRuntimeException("If statement condition is not a boolean");
 
 				if (result.Value) ExecuteStatement(conditionalNode.Body);
 				else if (conditionalNode.Otherwise is not null) ExecuteStatement(conditionalNode.Otherwise);
 				break;
+			}
 
 			case BlockNode blockNode:
 				ExecuteNodes(blockNode.Nodes);
 				break;
+
+			case ForLoopNode forLoopNode:
+			{
+				Env.PushScope();
+
+				ExecuteStatement(forLoopNode.BeginStatement);
+
+				IDataNode condition = forLoopNode.Condition.GetValue(Env);
+				if (condition is not BooleanNode result) throw new EggRuntimeException("For statement condition is not a boolean");
+
+				while (result.Value)
+				{
+					ExecuteNodes(forLoopNode.Body.Nodes);
+					ExecuteStatement(forLoopNode.EndStatement);
+
+					condition = forLoopNode.Condition.GetValue(Env);
+					result = (BooleanNode)condition;
+				}
+
+				Env.PopScope();
+
+				break;
+			}
 
 			default:
 				throw new EggRuntimeException($"Invalid node: {node.GetType().Name}");
