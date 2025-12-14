@@ -69,6 +69,17 @@ print(empty);
 """;
 		Assert.ThrowsException<EggRuntimeException>(() => Eggscript.ExecuteDirect(source));
 	}
+
+	[TestMethod]
+	public void Declaration_WhenUsedAsExpression_ThrowsError()
+	{
+		string source = """
+print(var text [string] = "test");
+print(text);
+""";
+		Assert.ThrowsException<EggSyntaxException>(() => Eggscript.ExecuteDirect(source));
+
+	}
 	#endregion
 
 	#region Variable assignments
@@ -97,6 +108,19 @@ print(text);
 		Eggscript.ExecuteDirect(source);
 
 		Assert.AreEqual($"hello{Br}", output.ToString());
+	}
+
+	[TestMethod]
+	public void Assignment_CanBeUsedAsExpression()
+	{
+		string source = """
+var text [string];
+print(text = "test");
+print(text);
+""";
+		Eggscript.ExecuteDirect(source);
+
+		Assert.AreEqual($"test{Br}test{Br}", output.ToString());
 	}
 	#endregion
 
