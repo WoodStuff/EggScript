@@ -120,8 +120,8 @@ internal partial class Parser(List<Token> _tokens)
 				break;
 			}
 
-			// var1 thing [num] = 5;
-			// var1 thing [num];
+			// var thing [num] = 5;
+			// var thing [num];
 			case "var":
 			{
 				Expect(TokenType.Identifier, out string name); // variable name
