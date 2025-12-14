@@ -212,8 +212,8 @@ internal partial class Parser(List<Token> _tokens)
 				=> new IncrementNode(var2.Name, "+", new NumberNode(1)),
 			UnaryOpNode { Operand: IdentifierNode var2 } unaryOpNode when unaryOpNode.Operator == "--"
 				=> new IncrementNode(var2.Name, "-", new NumberNode(1)),
-			_
-				=> throw new EggSyntaxException("Only keywords, assignment, increment or decrement expressions can be used as a statement"),
+
+			_ => throw new EggSyntaxException("Only keywords, assignment, increment or decrement expressions can be used as a statement"),
 		};
 		return node;
 	}
