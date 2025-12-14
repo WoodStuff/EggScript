@@ -7,7 +7,7 @@ namespace EggScript.Parsing.Nodes.Statement;
 /// A node that increments a numeric variable.
 /// </summary>
 /// <param name="name">The name of the variable.</param>
-/// <param name="data">The value to assign to the variable.</param>
+/// <param name="value">The amount to increment the variable.</param>
 internal class IncrementNode(string name, IExpressionNode value) : IStatementNode
 {
 	/// <summary>
