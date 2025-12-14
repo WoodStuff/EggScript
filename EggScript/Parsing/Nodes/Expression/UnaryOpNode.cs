@@ -53,6 +53,7 @@ internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 				};
 
 			case "++":
+			case "--":
 				switch (Operand)
 				{
 					case IdentifierNode n:
@@ -61,7 +62,7 @@ internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 						return before;
 
 					default:
-						throw new EggRuntimeException("Operator ++ can only be applied to variables");
+						throw new EggRuntimeException($"Operator {Operator} can only be applied to variables");
 				}
 
 			default:

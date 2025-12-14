@@ -22,7 +22,7 @@ internal partial class Parser(List<Token> _tokens)
 	/// </summary>
 	private static readonly Dictionary<int, string[]> operators = new()
 	{
-		{ 0, ["=", "+=", "*="] },
+		{ 0, ["=", "+=", "-=", "*=", "/="] },
 		{ 1, ["&"] },
 		{ 2, ["|"] },
 		{ 3, ["==", "!="] },
@@ -37,7 +37,7 @@ internal partial class Parser(List<Token> _tokens)
 	/// <summary>
 	/// All the unary operators that go after the expression. These always have higher precedence than any binary operator.
 	/// </summary>
-	private static readonly string[] unaryOperatorsRight = ["++"];
+	private static readonly string[] unaryOperatorsRight = ["++", "--"];
 	/// <summary>
 	/// The statements that can't have a semicolon after them. This includes if statements, and later, loops and functions.
 	/// </summary>
@@ -201,10 +201,17 @@ internal partial class Parser(List<Token> _tokens)
 				=> new VarAssignmentNode(var1.Name, operatorNode.Right),
 			OperatorNode { Left: IdentifierNode var1 } operatorNode when operatorNode.Operator == "+="
 				=> new IncrementNode(var1.Name, "+", operatorNode.Right),
+			OperatorNode { Left: IdentifierNode var1 } operatorNode when operatorNode.Operator == "-="
+				=> new IncrementNode(var1.Name, "-", operatorNode.Right),
 			OperatorNode { Left: IdentifierNode var1 } operatorNode when operatorNode.Operator == "*="
 				=> new IncrementNode(var1.Name, "*", operatorNode.Right),
+			OperatorNode { Left: IdentifierNode var1 } operatorNode when operatorNode.Operator == "/="
+				=> new IncrementNode(var1.Name, "/", operatorNode.Right),
+
 			UnaryOpNode { Operand: IdentifierNode var2 } unaryOpNode when unaryOpNode.Operator == "++"
 				=> new IncrementNode(var2.Name, "+", new NumberNode(1)),
+			UnaryOpNode { Operand: IdentifierNode var2 } unaryOpNode when unaryOpNode.Operator == "--"
+				=> new IncrementNode(var2.Name, "-", new NumberNode(1)),
 			_
 				=> throw new EggSyntaxException("Only keywords, assignment, increment or decrement expressions can be used as a statement"),
 		};
