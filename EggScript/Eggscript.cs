@@ -60,7 +60,7 @@ public static class Eggscript
 	/// <exception cref="EggScriptException">Thrown when the file is not an .egg file.</exception>
 	internal static void DisplayAST(string path)
 	{
-		if (Path.GetExtension(path) != ".egg") throw new EggScriptException("File is not an .ege file.");
+		if (Path.GetExtension(path) != ".egg") throw new EggFiletypeException();
 
 		string data = File.ReadAllText(path);
 		var tokens = Tokenizer.Tokenize(data);
