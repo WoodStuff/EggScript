@@ -61,6 +61,13 @@ internal static partial class Interpreter
 				Env.ModifyVariable(varAssNode.Name, varAssNode.Data.GetValue(Env));
 				break;
 
+			case IncrementNode incrementNode:
+				IDataNode var = Env.GetVariable(incrementNode.Name);
+				if (var is not NumberNode num) throw new EggRuntimeException("Invalid data types in operator");
+
+				Env.ModifyVariable(incrementNode.Name, num + (NumberNode)incrementNode.Value);
+				break;
+
 			case ConditionalNode conditionalNode:
 				IDataNode condition = conditionalNode.Condition.GetValue(Env);
 				if (condition is not BooleanNode result) throw new EggRuntimeException("If statement condition is not a boolean");

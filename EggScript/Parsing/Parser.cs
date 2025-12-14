@@ -31,9 +31,13 @@ internal partial class Parser(List<Token> _tokens)
 		{ 6, ["*", "/"] },
 	};
 	/// <summary>
-	/// All the unary operators. These always have higher precedence than any binary operator.
+	/// All the unary operators that go before the expression. These always have higher precedence than any binary operator.
 	/// </summary>
-	private static readonly string[] unaryOperators = ["+", "-", "!"];
+	private static readonly string[] unaryOperatorsLeft = ["+", "-", "!"];
+	/// <summary>
+	/// All the unary operators that go after the expression. These always have higher precedence than any binary operator.
+	/// </summary>
+	private static readonly string[] unaryOperatorsRight = ["++"];
 	/// <summary>
 	/// The statements that can't have a semicolon after them. This includes if statements, and later, loops and functions.
 	/// </summary>
@@ -116,8 +120,8 @@ internal partial class Parser(List<Token> _tokens)
 				break;
 			}
 
-			// var thing [num] = 5;
-			// var thing [num];
+			// var1 thing [num] = 5;
+			// var1 thing [num];
 			case "var":
 			{
 				Expect(TokenType.Identifier, out string name); // variable name
@@ -191,12 +195,15 @@ internal partial class Parser(List<Token> _tokens)
 	/// <exception cref="EggSyntaxException">Thrown when a syntax error is detected.</exception>
 	private static IStatementNode ParseExprStatement(IExpressionNode expr)
 	{
-		IStatementNode node;
-		if (expr is OperatorNode { Left: IdentifierNode var } operatorNode && operatorNode.Operator == "=")
+		IStatementNode node = expr switch
 		{
-			node = new VarAssignmentNode(var.Name, operatorNode.Right);
-		}
-		else throw new EggSyntaxException("Only keywords or assignment expressions can be used as a statement");
+			OperatorNode { Left: IdentifierNode var1 } operatorNode when operatorNode.Operator == "="
+				=> new VarAssignmentNode(var1.Name, operatorNode.Right),
+			UnaryOpNode { Operand: IdentifierNode var2 } unaryOpNode when unaryOpNode.Operator == "++"
+				=> new IncrementNode(var2.Name, new NumberNode(1)),
+			_
+				=> throw new EggSyntaxException("Only keywords, assignment, increment or decrement expressions can be used as a statement"),
+		};
 		return node;
 	}
 
@@ -244,13 +251,23 @@ internal partial class Parser(List<Token> _tokens)
 	private IExpressionNode ParseUnary()
 	{
 		IExpressionNode node;
-		if (Match(TokenType.Operator, out string op, unaryOperators))
+
+		// parse left
+		if (Match(TokenType.Operator, out string opl, unaryOperatorsLeft))
 		{
-			IExpressionNode value = ParseUnary();
-			node = new UnaryOpNode(op, value);
+			IExpressionNode leftValue = ParseUnary();
+			node = new UnaryOpNode(opl, leftValue);
 			return node;
 		}
-		return ParsePrimary();
+
+		// parse right
+		node = ParsePrimary();
+		while (Match(TokenType.Operator, out string opr, unaryOperatorsRight))
+		{
+			node = new UnaryOpNode(opr, node);
+		}
+
+		return node;
 	}
 
 	/// <summary>

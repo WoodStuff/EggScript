@@ -12,6 +12,11 @@ namespace EggScript.Parsing.Nodes.Expression;
 internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 {
 	/// <summary>
+	/// Operators where the operand shouldn't be evaluated.
+	/// Used for operators that act directly on variables, which don't require the variable's data.
+	/// </summary>
+	private static readonly string[] operators_dontparse = ["++"];
+	/// <summary>
 	/// The kind of operator, like negation.
 	/// </summary>
 	public string Operator { get; set; } = op;
@@ -22,7 +27,7 @@ internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 
 	public IDataNode GetValue(EggEnvironment env)
 	{
-		IDataNode operand = Operand.GetValue(env);
+		IDataNode? operand = operators_dontparse.Contains(Operator) ? null : Operand.GetValue(env);
 
 		switch (Operator)
 		{
@@ -46,6 +51,20 @@ internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 					BooleanNode n => !n,
 					_ => throw new EggRuntimeException("Invalid data types in operator"),
 				};
+
+			case "++":
+				switch (Operand)
+				{
+					case IdentifierNode n:
+						IDataNode var = env.GetVariable(n.Name);
+						if (var is not NumberNode num) throw new EggRuntimeException("Invalid data types in operator");
+
+						env.ModifyVariable(n.Name, num + new NumberNode(1));
+						return num;
+
+					default:
+						throw new EggRuntimeException("Operator ++ can only be applied to variables");
+				}
 
 			default:
 				throw new EggRuntimeException("Invalid operator");
