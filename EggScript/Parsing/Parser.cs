@@ -41,7 +41,7 @@ internal partial class Parser(List<Token> _tokens)
 	/// <summary>
 	/// The statements that can't have a semicolon after them. This includes if statements, and later, loops and functions.
 	/// </summary>
-	private static readonly string[] keywordsNoSemicolons = ["", "if"];
+	private static readonly string[] keywordsNoSemicolons = ["", "if", "for"];
 	#endregion
 
 	#region Properties
@@ -79,7 +79,7 @@ internal partial class Parser(List<Token> _tokens)
 	/// </summary>
 	/// <returns>The node corresponding to that statement.</returns>
 	/// <exception cref="EggSyntaxException">Thrown when a syntax error is detected.</exception>
-	private IStatementNode ParseStatement()
+	private IStatementNode ParseStatement(bool noSemi = false)
 	{
 		IStatementNode node;
 
@@ -92,7 +92,8 @@ internal partial class Parser(List<Token> _tokens)
 			node = ParseExprStatement(expr);
 		}
 
-		if (!keywordsNoSemicolons.Contains(keyword) && !Match(TokenType.Punctuation, ";")) Throw_Expected(Next().Value, ";");
+		if (!keywordsNoSemicolons.Contains(keyword) && !noSemi && !Match(TokenType.Punctuation, ";"))
+			Throw_Expected(Next().Value, ";");
 
 		return node;
 	}
@@ -177,6 +178,27 @@ internal partial class Parser(List<Token> _tokens)
 				}
 
 				node = new ConditionalNode(condition, block, otherwise);
+
+				break;
+			}
+
+			// for (var i [num] = 0; i < 10; i++) { ... }
+			case "for":
+			{
+				Expect(TokenType.Punctuation, "(");
+
+				IStatementNode beginStatement = ParseStatement();
+
+				IExpressionNode condition = ParseExpression();
+				Expect(TokenType.Punctuation, ";");
+
+				IStatementNode endStatement = ParseStatement(true);
+
+				Expect(TokenType.Punctuation, ")");
+
+				BlockNode block = Match(TokenType.Punctuation, "{") ? ParseBlock() : new(ParseStatement());
+
+				node = new ForLoopNode(beginStatement, condition, endStatement, block);
 
 				break;
 			}
@@ -304,7 +326,7 @@ internal partial class Parser(List<Token> _tokens)
 
 			// parentheses
 			case TokenType.Punctuation:
-				if (token.Value != "(") Throw_Expected(token.Value);
+				if (token.Value != "(") Throw_Expected(token.Value, "(");
 				node = ParseExpression();
 				Expect(TokenType.Punctuation, ")");
 				break;
@@ -313,6 +335,7 @@ internal partial class Parser(List<Token> _tokens)
 				Throw_Expected(token.Value);
 				throw new Exception(); // required because C# doesn't realize Throw_Expected always throws
 		}
+
 		return node;
 	}
 
