@@ -65,7 +65,7 @@ internal static partial class Interpreter
 			case IncrementNode incrementNode:
 				IDataNode var = Env.GetVariable(incrementNode.Name);
 
-				OperatorNode operation = new(var, "+", incrementNode.Value.GetValue(Env));
+				OperatorNode operation = new(var, incrementNode.Operator, incrementNode.Value.GetValue(Env));
 				Env.ModifyVariable(incrementNode.Name, operation.GetValue(Env));
 				break;
 

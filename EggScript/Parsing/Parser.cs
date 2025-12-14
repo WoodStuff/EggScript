@@ -22,7 +22,7 @@ internal partial class Parser(List<Token> _tokens)
 	/// </summary>
 	private static readonly Dictionary<int, string[]> operators = new()
 	{
-		{ 0, ["=", "+="] },
+		{ 0, ["=", "+=", "*="] },
 		{ 1, ["&"] },
 		{ 2, ["|"] },
 		{ 3, ["==", "!="] },
@@ -200,9 +200,11 @@ internal partial class Parser(List<Token> _tokens)
 			OperatorNode { Left: IdentifierNode var1 } operatorNode when operatorNode.Operator == "="
 				=> new VarAssignmentNode(var1.Name, operatorNode.Right),
 			OperatorNode { Left: IdentifierNode var1 } operatorNode when operatorNode.Operator == "+="
-				=> new IncrementNode(var1.Name, operatorNode.Right),
+				=> new IncrementNode(var1.Name, "+", operatorNode.Right),
+			OperatorNode { Left: IdentifierNode var1 } operatorNode when operatorNode.Operator == "*="
+				=> new IncrementNode(var1.Name, "*", operatorNode.Right),
 			UnaryOpNode { Operand: IdentifierNode var2 } unaryOpNode when unaryOpNode.Operator == "++"
-				=> new IncrementNode(var2.Name, new NumberNode(1)),
+				=> new IncrementNode(var2.Name, "+", new NumberNode(1)),
 			_
 				=> throw new EggSyntaxException("Only keywords, assignment, increment or decrement expressions can be used as a statement"),
 		};

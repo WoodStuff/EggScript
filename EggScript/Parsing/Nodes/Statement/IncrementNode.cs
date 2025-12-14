@@ -4,16 +4,21 @@ using EggScript.Parsing.Nodes.Expression.Data;
 namespace EggScript.Parsing.Nodes.Statement;
 
 /// <summary>
-/// A node that increments a numeric variable.
+/// A node that increments a variable.
 /// </summary>
 /// <param name="name">The name of the variable.</param>
+/// <param name="op">The operator to use.</param>
 /// <param name="value">The amount to increment the variable.</param>
-internal class IncrementNode(string name, IExpressionNode value) : IStatementNode
+internal class IncrementNode(string name, string op, IExpressionNode value) : IStatementNode
 {
 	/// <summary>
 	/// The name of the variable.
 	/// </summary>
 	public string Name { get; } = name;
+	/// <summary>
+	/// The operator to use.
+	/// </summary>
+	public string Operator { get; } = op;
 	/// <summary>
 	/// The amount to increment the variable.
 	/// </summary>
@@ -26,6 +31,7 @@ internal class IncrementNode(string name, IExpressionNode value) : IStatementNod
 IncrementNode
 (
     Name: {Name}
+	Operator: {Operator}
     Value: {value}
 )
 """;
