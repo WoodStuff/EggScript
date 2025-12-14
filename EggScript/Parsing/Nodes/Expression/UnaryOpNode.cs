@@ -56,11 +56,9 @@ internal class UnaryOpNode(string op, IExpressionNode value) : IExpressionNode
 				switch (Operand)
 				{
 					case IdentifierNode n:
-						IDataNode var = env.GetVariable(n.Name);
-						if (var is not NumberNode num) throw new EggRuntimeException("Invalid data types in operator");
-
-						env.ModifyVariable(n.Name, num + new NumberNode(1));
-						return num;
+						IDataNode before = env.GetVariable(n.Name);
+						Interpreter.ExecuteStatement(Parser.ParseExprStatement(this));
+						return before;
 
 					default:
 						throw new EggRuntimeException("Operator ++ can only be applied to variables");

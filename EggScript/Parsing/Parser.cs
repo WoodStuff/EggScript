@@ -193,7 +193,7 @@ internal partial class Parser(List<Token> _tokens)
 	/// <param name="expr">The statement's expression.</param>
 	/// <returns>The node corresponding to that statement.</returns>
 	/// <exception cref="EggSyntaxException">Thrown when a syntax error is detected.</exception>
-	private static IStatementNode ParseExprStatement(IExpressionNode expr)
+	internal static IStatementNode ParseExprStatement(IExpressionNode expr)
 	{
 		IStatementNode node = expr switch
 		{

@@ -36,80 +36,111 @@ internal class OperatorNode(IExpressionNode left, string op, IExpressionNode rig
 		IDataNode? left = operators_dontparseleft.Contains(Operator) ? null : Left.GetValue(env);
 		IDataNode right = Right.GetValue(env);
 
-		return Operator switch
+		switch (Operator)
 		{
-			"+" => (left, right) switch
-			{
-				(NumberNode l, NumberNode r) => l + r,
-				(StringNode l, StringNode r) => l + r,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"-" => (left, right) switch
-			{
-				(NumberNode l, NumberNode r) => l - r,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"*" => (left, right) switch
-			{
-				(NumberNode l, NumberNode r) => l * r,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"/" => (left, right) switch
-			{
-				(NumberNode l, NumberNode r) => l / r,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"&" => (left, right) switch
-			{
-				(BooleanNode l, BooleanNode r) => l & r,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"|" => (left, right) switch
-			{
-				(BooleanNode l, BooleanNode r) => l | r,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"==" => (left, right) switch
-			{
-				(StringNode l, StringNode r) => new BooleanNode(l.Value == r.Value),
-				(NumberNode l, NumberNode r) => new BooleanNode(l.Value == r.Value),
-				(BooleanNode l, BooleanNode r) => new BooleanNode(l.Value == r.Value),
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"!=" => (left, right) switch
-			{
-				(StringNode l, StringNode r) => new BooleanNode(l.Value != r.Value),
-				(NumberNode l, NumberNode r) => new BooleanNode(l.Value != r.Value),
-				(BooleanNode l, BooleanNode r) => new BooleanNode(l.Value != r.Value),
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			">" => (left, right) switch
-			{
-				(NumberNode l, NumberNode r) => l > r,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"<" => (left, right) switch
-			{
-				(NumberNode l, NumberNode r) => l < r,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			">=" => (left, right) switch
-			{
-				(NumberNode l, NumberNode r) => l >= r,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"<=" => (left, right) switch
-			{
-				(NumberNode l, NumberNode r) => l <= r,
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			"=" => Left switch
-			{
-				IdentifierNode l => env.ModifyVariable(l.Name, right),
-				_ => throw new EggRuntimeException("Invalid data types in operator"),
-			},
-			_ => throw new EggRuntimeException("Invalid operator"),
-		};
+			case "+":
+				return (left, right) switch
+				{
+					(NumberNode l, NumberNode r) => l + r,
+					(StringNode l, StringNode r) => l + r,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "-":
+				return (left, right) switch
+				{
+					(NumberNode l, NumberNode r) => l - r,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "*":
+				return (left, right) switch
+				{
+					(NumberNode l, NumberNode r) => l * r,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "/":
+				return (left, right) switch
+				{
+					(NumberNode l, NumberNode r) => l / r,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "&":
+				return (left, right) switch
+				{
+					(BooleanNode l, BooleanNode r) => l & r,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "|":
+				return (left, right) switch
+				{
+					(BooleanNode l, BooleanNode r) => l | r,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "==":
+				return (left, right) switch
+				{
+					(StringNode l, StringNode r) => new BooleanNode(l.Value == r.Value),
+					(NumberNode l, NumberNode r) => new BooleanNode(l.Value == r.Value),
+					(BooleanNode l, BooleanNode r) => new BooleanNode(l.Value == r.Value),
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "!=":
+				return (left, right) switch
+				{
+					(StringNode l, StringNode r) => new BooleanNode(l.Value != r.Value),
+					(NumberNode l, NumberNode r) => new BooleanNode(l.Value != r.Value),
+					(BooleanNode l, BooleanNode r) => new BooleanNode(l.Value != r.Value),
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case ">":
+				return (left, right) switch
+				{
+					(NumberNode l, NumberNode r) => l > r,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "<":
+				return (left, right) switch
+				{
+					(NumberNode l, NumberNode r) => l < r,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case ">=":
+				return (left, right) switch
+				{
+					(NumberNode l, NumberNode r) => l >= r,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "<=":
+				return (left, right) switch
+				{
+					(NumberNode l, NumberNode r) => l <= r,
+					_ => throw new EggRuntimeException("Invalid data types in operator"),
+				};
+
+			case "=":
+				switch (Left)
+				{
+					case IdentifierNode:
+						Interpreter.ExecuteStatement(Parser.ParseExprStatement(this));
+						return right;
+
+					default:
+						throw new EggRuntimeException("Invalid data types in operator");
+				}
+
+			default:
+				throw new EggRuntimeException("Invalid operator");
+		}
 	}
 
 	public override string ToString()
