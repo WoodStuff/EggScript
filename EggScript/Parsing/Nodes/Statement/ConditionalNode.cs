@@ -25,8 +25,8 @@ internal class ConditionalNode(IExpressionNode condition, BlockNode body, BlockN
 	public override string ToString()
 	{
 		string condition = Condition.ToString()!.Replace("\n", "\n    ");
-		string body = Body.Nodes.Count == 0 ? "Empty" : string.Join('\n', Body).ToString()!.Replace("\n", "\n    ");
-		string otherwise = Otherwise?.Nodes.Count is null or 0 ? "Empty" : string.Join('\n', Otherwise).ToString()!.Replace("\n", "\n    ");
+		string body = Body.Count == 0 ? "Empty" : Body.ToString()!.Replace("\n", "\n    ");
+		string otherwise = Otherwise?.Count is null or 0 ? "Empty" : Otherwise.ToString()!.Replace("\n", "\n    ");
 		return $"""
 IfNode
 (

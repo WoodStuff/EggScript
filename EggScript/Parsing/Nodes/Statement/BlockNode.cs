@@ -35,9 +35,9 @@ internal class BlockNode : IStatementNode
 	{
 		string data = string.Join('\n', Nodes).ToString()!.Replace("\n", "\n    ");
 		return $"""
-BlockNode
+BlockNode ({Count})
 (
-    Value: {data}
+    {data}
 )
 """;
 	}
