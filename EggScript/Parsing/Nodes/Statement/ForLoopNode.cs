@@ -10,19 +10,19 @@ internal class ForLoopNode(IStatementNode beginStatement, IExpressionNode condit
 	/// <summary>
 	/// The statement to execute at the beginning of the loop.
 	/// </summary>
-	IStatementNode BeginStatement { get; } = beginStatement;
+	public IStatementNode BeginStatement { get; } = beginStatement;
 	/// <summary>
 	/// The condition to check after each iteration of the loop. Checked after <see cref="EndStatement"/> runs.
 	/// </summary>
-	IExpressionNode Condition { get; } = condition;
+	public IExpressionNode Condition { get; } = condition;
 	/// <summary>
 	/// The statement to execute at the end of each iteration of the loop.
 	/// </summary>
-	IStatementNode EndStatement { get; } = endStatement;
+	public IStatementNode EndStatement { get; } = endStatement;
 	/// <summary>
 	/// The block to execute each iteration of the loop.
 	/// </summary>
-	BlockNode Body { get; } = body;
+	public BlockNode Body { get; } = body;
 
 	public override string ToString()
 	{
