@@ -155,11 +155,39 @@ public sealed class ParserTests
 	public void Parser_HandlesIfStatementCorrectly()
 	{
 		IStatementNode node = Parser.ParseStatement("""if true { print("success"); print(2); }""");
+
+		// condition
 		Assert.IsInstanceOfType<ConditionalNode>(node);
 		Assert.IsInstanceOfType<BooleanNode>(((ConditionalNode)node).Condition);
-		Assert.AreEqual(2, ((ConditionalNode)node).Body.Nodes.Count);
-		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Body.Nodes[0]);
-		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Body.Nodes[1]);
+
+		// main body
+		Assert.AreEqual(2, ((ConditionalNode)node).Body.Count);
+		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Body[0]);
+		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Body[1]);
+
+		// else body (nonexistent)
+		Assert.IsNull(((ConditionalNode)node).Otherwise);
+	}
+
+	[TestMethod]
+	public void Parser_HandlesIfElseStatementCorrectly()
+	{
+		IStatementNode node =
+			Parser.ParseStatement("""if true { print("success"); print(2); } else { print("fail"); }""");
+
+		// condition
+		Assert.IsInstanceOfType<ConditionalNode>(node);
+		Assert.IsInstanceOfType<BooleanNode>(((ConditionalNode)node).Condition);
+
+		// main body
+		Assert.AreEqual(2, ((ConditionalNode)node).Body.Count);
+		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Body[0]);
+		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Body[1]);
+
+		// else body
+		Assert.IsNotNull(((ConditionalNode)node).Otherwise);
+		Assert.AreEqual(1, ((ConditionalNode)node).Otherwise!.Count);
+		Assert.IsInstanceOfType<PrintNode>(((ConditionalNode)node).Otherwise![0]);
 	}
 
 	[TestMethod]
