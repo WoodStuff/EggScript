@@ -128,6 +128,7 @@ internal class OperatorNode(IExpressionNode left, string op, IExpressionNode rig
 				};
 
 			case "=":
+			case "+=":
 				switch (Left)
 				{
 					case IdentifierNode:

@@ -1,5 +1,6 @@
 ﻿using EggScript.Exceptions;
 using EggScript.Parsing;
+using EggScript.Parsing.Nodes.Expression;
 using EggScript.Parsing.Nodes.Expression.Data;
 using EggScript.Parsing.Nodes.Statement;
 
@@ -63,9 +64,9 @@ internal static partial class Interpreter
 
 			case IncrementNode incrementNode:
 				IDataNode var = Env.GetVariable(incrementNode.Name);
-				if (var is not NumberNode num) throw new EggRuntimeException("Invalid data types in operator");
 
-				Env.ModifyVariable(incrementNode.Name, num + (NumberNode)incrementNode.Value);
+				OperatorNode operation = new(var, "+", incrementNode.Value.GetValue(Env));
+				Env.ModifyVariable(incrementNode.Name, operation.GetValue(Env));
 				break;
 
 			case ConditionalNode conditionalNode:
